@@ -17,7 +17,7 @@ export default function App() {
   return (
     <NavigationContainer>
         {
-          false ? <AppNavigator/>:<Auth/>
+          true ? <AppNavigator/>:<Auth/>
         }
     </NavigationContainer>
   );
