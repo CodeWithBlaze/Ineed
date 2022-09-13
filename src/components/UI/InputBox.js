@@ -1,17 +1,33 @@
 import React from 'react';
-import {TextInput,StyleSheet} from 'react-native';
+import {TextInput,StyleSheet,Text} from 'react-native';
 import { PRIMARY_COLOR } from '../../constant/Color';
-function InputBox({placeholder,value,setValue,customStyle,type,secureEntry}) {
+import InfoHeadingText from './InfoHeadingText';
+function InputBox({
+    placeholder,
+    value,
+    setValue,
+    customStyle,
+    type,
+    secureEntry,
+    onError,
+    multiline=false
+}) {
     return (
+        <>
         <TextInput
-        placeholderTextColor={PRIMARY_COLOR}
-        placeholder={placeholder}
-        value={value}
-        keyboardType={type}
-        secureTextEntry={secureEntry?true:false}
-        onChangeText={(nt)=>setValue(nt)}
-        style={[styles.container,customStyle]}
+            placeholderTextColor={PRIMARY_COLOR}
+            placeholder={placeholder}
+            value={value}
+            keyboardType={type}
+            secureTextEntry={secureEntry?true:false}
+            onChangeText={(nt)=>setValue(nt)}
+            style={[styles.container,customStyle,onError?styles.errorStyle:null]}
+            multiline={multiline}
         />
+        {onError && <InfoHeadingText info={onError}/>}
+        </>
+        
+        
     );
 }
 const styles = StyleSheet.create({
@@ -24,6 +40,11 @@ const styles = StyleSheet.create({
         backgroundColor:'#EFEEFF',
         color:PRIMARY_COLOR,
         marginBottom:15
+    },
+    errorStyle:{
+        borderWidth:2,
+        borderColor:'red'
     }
+    
 })
 export default InputBox;

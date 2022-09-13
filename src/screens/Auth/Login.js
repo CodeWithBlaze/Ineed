@@ -3,7 +3,6 @@ import {StyleSheet,Image,View} from 'react-native';
 import SafeAreaView from '../../components/container/SafeAreaView';
 import { useNavigation } from '@react-navigation/native';
 import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from '../../constant/Color';
-import { StatusBar } from 'expo-status-bar';
 import Form from '../../components/form/Form';
 import InputBox from '../../components/UI/InputBox';
 import Button from '../../components/UI/Button';
@@ -48,7 +47,6 @@ function Login(props) {
                 onPress={()=>navigation.navigate('signup')}
                 />
             </Form>
-            <StatusBar style="light" />
         </SafeAreaView>
     );
 }

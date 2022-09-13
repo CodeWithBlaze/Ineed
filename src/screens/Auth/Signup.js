@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import {StyleSheet,Image,View} from 'react-native';
 import SafeAreaView from '../../components/container/SafeAreaView';
 import { useNavigation } from '@react-navigation/native';
-import {DARK_PRIMARY_COLOR, LIGHT_GREY_COLOR, PRIMARY_COLOR} from '../../constant/Color';
-import { StatusBar } from 'expo-status-bar';
+import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from '../../constant/Color';
 import Form from '../../components/form/Form';
 import InputBox from '../../components/UI/InputBox';
 import Button from '../../components/UI/Button';
@@ -16,6 +15,7 @@ function Signup(props) {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     return (
+        
         <SafeAreaView customStyle={customStyles.container}>
             <Image source={{uri:'https://res.cloudinary.com/codecafe/image/upload/v1662662586/IneedAsset/Signup_form_m7cybv.png'}}
                 style={styles.image}
@@ -55,11 +55,13 @@ function Signup(props) {
                 onPress={()=>navigation.navigate('login')}
                 />
             </Form>
-            <StatusBar style="light" />
+            
         </SafeAreaView>
+        
     );
 }
 const styles = StyleSheet.create({
+    keyView:{flex:1},
     image:{
         marginTop:15,
         width:200,

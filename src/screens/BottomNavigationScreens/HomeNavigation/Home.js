@@ -1,15 +1,15 @@
 import React from 'react';
-import { Text,StyleSheet,View, FlatList, Dimensions, ScrollView } from 'react-native';
-import SafeAreaView from '../../components/container/SafeAreaView';
-import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from '../../constant/Color';
-import { Entypo } from '@expo/vector-icons';
-import Button from '../../components/UI/Button';
-import CicularImage from '../../components/UI/CicularImage';
-import { SponseredTeachers } from '../../temp/Data';
+import { Text,StyleSheet,View, FlatList,Image, ScrollView } from 'react-native';
+import SafeAreaView from '../../../components/container/SafeAreaView';
+import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from '../../../constant/Color';
+import Button from '../../../components/UI/Button';
+import CicularImage from '../../../components/UI/CicularImage';
+import { cardData, SponseredTeachers } from '../../../temp/Data';
+import CategortList from '../../../components/UI/CategortList';
 
 function ListImageContainer({item}){
-    if(item.type)
-        return <Spacers/>
+    if(item.type === 'spacers')
+        return <Spacers space={80}/>
     return <View style={styles.imageContainer}>
         <CicularImage 
                 size={160}
@@ -20,8 +20,8 @@ function ListImageContainer({item}){
     </View>
     
 }
-function Spacers(){
-    return <View style={{width:80}}></View>
+function Spacers({space}){
+    return <View style={{width:space}}></View>
 }
 function Home(props) {
     return (
@@ -29,9 +29,11 @@ function Home(props) {
         <SafeAreaView customStyle={{flex:1}}>
             <ScrollView>
             <View style={styles.sponsorContainer}>
-                <Button 
-                CustomIcon={<Entypo name="menu" size={40} color="white" />}
-                customButtonStyle={customStyle.customMenuStyle}
+                <Image source={{uri:'https://res.cloudinary.com/codecafe/image/upload/v1662745661/IneedAsset/Group_1062_nu91ec.png'}}
+                style={{width:180,height:180,position:'absolute',top:-30,left:-50}}
+                />
+                <Image source={{uri:'https://res.cloudinary.com/codecafe/image/upload/v1662745661/IneedAsset/Group_1062_nu91ec.png'}}
+                style={{width:180,height:180,position:'absolute',bottom:-30,right:-50}}
                 />
                 <View style={styles.headingText}>
                     <Text style={styles.mainHeading}>DAILY PICK</Text>
@@ -54,9 +56,11 @@ function Home(props) {
                     />
                 </View>
             </View>
-            <View style={styles.CategoryJobContainer}>
-                <Text style={styles.categoryText}>Explore</Text>
-            </View>
+            <CategortList data={cardData} category={'Explore'}/>
+            <CategortList data={cardData} category={'Oneday Boost'}/>
+            <CategortList data={cardData} category={'Weekly Dose'}/>
+            <CategortList data={cardData} category={'Join Batch'} customContainerStyle={{marginBottom:60}}/>
+            
             </ScrollView>
            
         </SafeAreaView>
@@ -64,11 +68,14 @@ function Home(props) {
 }
 const styles = StyleSheet.create({
     sponsorContainer:{
-        height:450,
+        paddingTop:30,
+        height:400,
         backgroundColor:PRIMARY_COLOR,
         borderBottomRightRadius:30,
         borderBottomLeftRadius:30,
-        paddingBottom:40
+        paddingBottom:40,
+        overflow:'hidden',
+        
     },
     imageContainer:{
         marginHorizontal:35,
@@ -93,24 +100,11 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center'
     },
-    CategoryJobContainer:{
-        marginTop:10,
-        paddingHorizontal:30,
-        paddingVertical:15,
-        width:'100%',
-        backgroundColor:'white'
-    },
-    categoryText:{
-        fontSize:25,
-        fontFamily:'Primary-Bold'    
-    }
+    
+    
     
 })
 const customStyle = {
-    customMenuStyle:{
-        width:100,
-        marginTop:15
-    },
     images:{
         elevation:15,
     },
@@ -119,12 +113,14 @@ const customStyle = {
         height:60,
         borderRadius:15,
         backgroundColor:DARK_PRIMARY_COLOR,
-        marginRight:15
+        marginRight:15,
+        elevation:15
     },
     mainBtn:{
         backgroundColor:'white',
         width:160,
-        borderRadius:10
+        borderRadius:10,
+        elevation:15
     }
 }
 export default Home;

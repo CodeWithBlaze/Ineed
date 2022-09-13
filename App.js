@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './src/components/navigation/AppNavigator';
+import { RootSiblingParent } from 'react-native-root-siblings';
 import Auth from './src/components/navigation/Auth';
+import BottomNavigation from './src/screens/navigation/BottomNavigation';
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Brand': require('./assets/fonts/Pacifico.ttf'),
@@ -16,9 +17,11 @@ export default function App() {
   }
   return (
     <NavigationContainer>
+      <RootSiblingParent>
         {
-          true ? <AppNavigator/>:<Auth/>
+          true ? <BottomNavigation/>:<Auth/>
         }
+      </RootSiblingParent>
     </NavigationContainer>
   );
 }
