@@ -4,62 +4,24 @@ import {Text,View,StyleSheet,TouchableWithoutFeedback} from 'react-native';
 import { DARK_GREY, LIGHT_GREY_COLOR } from '../../constant/Color';
 import CircularImage from './CicularImage';
 import IconText from './IconText';
+import JobDetailsProperty from './JobDetailsProperty';
+import UserCard from './UserCard';
 function JobCard({item,customContainerStyle}) {
     const navigation = useNavigation()
     return (
         <TouchableWithoutFeedback onPress={()=>navigation.navigate('JobDetail')}>
 
         <View style={[styles.container,customContainerStyle]}>
-            <View style={styles.userinfo}>
-                <CircularImage 
-                url={item.image}
-                size={80}
-                
-                />
-                <IconText 
-                title={item.rating} 
-                icon={'star'} 
-                iconSize={20} 
-                iconColor='orange'
-                customContainerStyle={customStyle.textContainer}
-                customTextStyle={{fontSize:12}}
-                />
-            </View>
+            <UserCard rating={item.rating} image={item.image}/>
             <View style={styles.userDetails}>
                 <Text style={styles.JobPerson}>{item.name}</Text>
                 <Text style={styles.Job}>{item.service}</Text>
                 <View style={styles.JobDetails}>
-                <IconText 
-                icon={'money'} 
-                iconSize={14} 
-                iconColor={DARK_GREY}
-                title={item.charge}
-                customContainerStyle={{width:'50%'}}
-                customTextStyle={{fontSize:14,color:DARK_GREY,marginRight:15}}
-                />
-                <IconText 
-                icon={'tv'} 
-                iconSize={14} 
-                iconColor={DARK_GREY}
-                title={item.mode}
-                customContainerStyle={{width:'50%'}}
-                customTextStyle={{fontSize:14,color:DARK_GREY}}
-                />
-                <IconText 
-                icon={'language'} 
-                iconSize={14} 
-                iconColor={DARK_GREY}
-                title={item.language}
-                customContainerStyle={{width:'50%'}}
-                customTextStyle={{fontSize:14,color:DARK_GREY,marginRight:15}}
-                />
-                <IconText 
-                icon={'calendar'} 
-                iconSize={14} 
-                iconColor={DARK_GREY}
-                title={item.date}
-                customContainerStyle={{width:'50%'}}
-                customTextStyle={{fontSize:14,color:DARK_GREY}}
+                <JobDetailsProperty 
+                item={item} 
+                iconColor={DARK_GREY} 
+                textColor={DARK_GREY}
+                size={14}
                 />
                 </View>
             </View>
@@ -81,12 +43,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         flexWrap:'wrap'
     },
-    userinfo:{
-        width:'30%',
-        alignItems:'center',
-        paddingTop:15,
-        // backgroundColor:'red'
-    },
+    
     userDetails:{
         padding:15,
         width:'70%',
@@ -105,14 +62,5 @@ const styles = StyleSheet.create({
     }
 
 })
-const customStyle = {
-    textContainer:{
-        alignItems:'center',
-        marginTop:15,
-        borderWidth:1,
-        borderColor:LIGHT_GREY_COLOR,
-        padding:10,
-        borderRadius:25
-    }
-}
+
 export default JobCard;

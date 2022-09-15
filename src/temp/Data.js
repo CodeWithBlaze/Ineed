@@ -59,3 +59,34 @@ export const cardData = [
         rating:4.5
     },
 ]
+
+export const reviews = [
+    {
+        id:1,
+        image:'https://static.wikia.nocookie.net/naruto-bleach/images/5/58/Itachi_Uchiha001.jpg/revision/latest?cb=20101219183908',
+        name:'Mr Itachi Uchiha',
+        rating:4,
+        review:'React Native Reviews is a highly customizable component with no dependencies meant to be used to to propmt your users to review your app. This is not a modal component. Its just a presentational component you can use on top of your preferred modal component.'
+    },
+    {
+        id:2,
+        image:'https://i.pinimg.com/736x/e9/c1/66/e9c16641fb3a290b197a2988948c4679.jpg',
+        name:'Madara uchiha',
+        rating:3,
+        review:'React Native Reviews is a highly customizable component with no dependencies meant to be used to to propmt your users to review your app. This is not a modal component. Its just a presentational component you can use on top of your preferred modal component.'
+    },
+    {
+        id:3,
+        image:'https://staticg.sportskeeda.com/editor/2022/08/53e15-16596004347246.png',
+        name:'Naruto Uzumaki',
+        rating:5,
+        review:'React Native Reviews is a highly customizable component with no dependencies meant to be used to to propmt your users to review your app. This is not a modal component. Its just a presentational component you can use on top of your preferred modal component.'
+    },
+    {
+        id:4,
+        image:'https://static.wikia.nocookie.net/naruto/images/7/71/Minato_Namikaze.png/revision/latest/scale-to-width-down/300?cb=20160125175116',
+        name:'Minato Sensei',
+        rating:3,
+        review:'React Native Reviews is a highly customizable component with no dependencies meant to be used to to propmt your users to review your app. This is not a modal component. Its just a presentational component you can use on top of your preferred modal component.'
+    },
+]
