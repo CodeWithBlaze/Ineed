@@ -6,6 +6,8 @@ import Button from '../../../components/UI/Button';
 import CicularImage from '../../../components/UI/CicularImage';
 import { cardData, SponseredTeachers } from '../../../temp/Data';
 import CategortList from '../../../components/UI/CategortList';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 function ListImageContainer({item}){
     if(item.type === 'spacers')
@@ -24,6 +26,7 @@ function Spacers({space}){
     return <View style={{width:space}}></View>
 }
 function Home(props) {
+    const navigation = useNavigation();
     return (
         
         <SafeAreaView customStyle={{flex:1}}>
@@ -34,6 +37,12 @@ function Home(props) {
                 />
                 <Image source={{uri:'https://res.cloudinary.com/codecafe/image/upload/v1662745661/IneedAsset/Group_1062_nu91ec.png'}}
                 style={{width:180,height:180,position:'absolute',bottom:-30,right:-50}}
+                />
+                <Ionicons 
+                name="chatbox-outline" 
+                size={30} color="white" 
+                style={styles.chatBox}
+                onPress={()=>navigation.navigate('Chat')}
                 />
                 <View style={styles.headingText}>
                     <Text style={styles.mainHeading}>DAILY PICK</Text>
@@ -100,8 +109,11 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center'
     },
-    
-    
+    chatBox:{
+        position:'absolute',
+        top:5,
+        right:20
+    }
     
 })
 const customStyle = {

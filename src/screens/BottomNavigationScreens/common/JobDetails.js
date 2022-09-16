@@ -8,7 +8,7 @@ import ReviewCard from '../../../components/UI/ReviewCard';
 import UserCard from '../../../components/UI/UserCard';
 import { DARK_GREY, PRIMARY_COLOR } from '../../../constant/Color';
 import { cardData, reviews } from '../../../temp/Data';
-
+import Button from '../../../components/UI/Button';
 
 
 const iconColor = 'white';
@@ -41,7 +41,8 @@ function JobDetails(props) {
     const [active,setActive] = useState(OptionsList[0]);
     
     function scrollClickHandler(id){
-        scrollRef.current.scrollTo({y:optionsList[id].scrollCoords.y})
+        if(optionsList[id] && optionsList[id].scrollCoords && optionsList[id].scrollCoords.y)
+            scrollRef.current.scrollTo({y:optionsList[id].scrollCoords.y})
     }
     function updateActiveComponent(option){
         scrollClickHandler(option.id)
@@ -78,6 +79,11 @@ function JobDetails(props) {
             >
             <Text style={styles.heading}>Job Title</Text>
             <Text style={styles.description}>The central place of “text” as a means of organising language in order to construct what people come to think of as “knowledge” is a phenomenon affecting all educators, students, and citizens of modern societies. This volume offers various voices and perspectives including those of Ron Carter and Michael Halliday on the role of text in education and society. </Text>
+            <Button 
+            customButtonStyle={customStyle.actionBtn}
+            title={'Book Now'}
+            customTextStyle={customStyle.actionText}
+            />
             </View>
             <View style={styles.propertyContainer} onLayout={(event)=>{
                 const layout = event.nativeEvent.layout;
@@ -116,6 +122,11 @@ function JobDetails(props) {
                 customContainerStyle={{width:'100%'}}
                 customTextStyle={{fontSize:textSize,color:textColor,marginRight:15,marginLeft:10}}
             />
+            <Button 
+            customButtonStyle={customStyle.actionBtn}
+            title={'Book Now'}
+            customTextStyle={customStyle.actionText}
+            />
             </View>
             <View style={styles.instructor} onLayout={(event)=>{
                 const layout = event.nativeEvent.layout;
@@ -144,6 +155,11 @@ function JobDetails(props) {
                 showsHorizontalScrollIndicator={false}
                 />
             </View>
+            <Button 
+            customButtonStyle={customStyle.actionBtn}
+            title={'Book Now'}
+            customTextStyle={customStyle.actionText}
+            />
         </ScrollView>
             </SelectNavigator>
         </SafeAreaView>
@@ -173,7 +189,7 @@ const styles = StyleSheet.create({
     instructor:{
         backgroundColor:'white',
         padding:15,
-        marginBottom:60,
+        marginBottom:15,
         borderRadius:15,
         paddingBottom:30
     },
@@ -203,4 +219,16 @@ const styles = StyleSheet.create({
         marginBottom:30
     }
 })
+const customStyle = {
+    actionBtn:{
+        width:'100%',
+        backgroundColor:'white',
+        borderRadius:5,
+        marginTop:20,
+        marginBottom:60
+    },
+    actionText:{
+        color:PRIMARY_COLOR
+    }
+}
 export default JobDetails;

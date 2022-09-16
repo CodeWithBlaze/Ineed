@@ -6,7 +6,7 @@ import CircularImage from './CicularImage';
 import IconText from './IconText';
 import JobDetailsProperty from './JobDetailsProperty';
 import UserCard from './UserCard';
-function JobCard({item,customContainerStyle}) {
+function JobCard({item,customContainerStyle,status=false}) {
     const navigation = useNavigation()
     return (
         <TouchableWithoutFeedback onPress={()=>navigation.navigate('JobDetail')}>
@@ -22,7 +22,8 @@ function JobCard({item,customContainerStyle}) {
                 iconColor={DARK_GREY} 
                 textColor={DARK_GREY}
                 size={14}
-                />
+                status={status}
+            />
                 </View>
             </View>
         </View>

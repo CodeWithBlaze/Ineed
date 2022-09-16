@@ -3,7 +3,8 @@ import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import Auth from './src/components/navigation/Auth';
-import BottomNavigation from './src/screens/navigation/BottomNavigation';
+import AppNavigation from './src/screens/navigation/AppNavigation';
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Brand': require('./assets/fonts/Pacifico.ttf'),
@@ -19,7 +20,7 @@ export default function App() {
     <NavigationContainer>
       <RootSiblingParent>
         {
-          true ? <BottomNavigation/>:<Auth/>
+          true ? <AppNavigation/>:<Auth/>
         }
       </RootSiblingParent>
     </NavigationContainer>
