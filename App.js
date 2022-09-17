@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
-import { RootSiblingParent } from 'react-native-root-siblings';
-import Auth from './src/components/navigation/Auth';
-import AppNavigation from './src/screens/navigation/AppNavigation';
+import MainApp from './MainApp';
+import { Provider } from 'react-redux';
+import store from './src/backend/slices/index';
+
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -16,13 +17,10 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+  
   return (
-    <NavigationContainer>
-      <RootSiblingParent>
-        {
-          true ? <AppNavigation/>:<Auth/>
-        }
-      </RootSiblingParent>
-    </NavigationContainer>
+    <Provider store={store}>
+      <MainApp/>
+    </Provider>
   );
 }

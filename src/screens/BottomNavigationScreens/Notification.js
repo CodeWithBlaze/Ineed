@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View,StyleSheet, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import JobCard from '../../components/UI/JobCard';
 import {cardData} from '../../temp/Data';
 import SafeAreaView from '../../components/container/SafeAreaView';
@@ -8,7 +8,7 @@ function Notification(props) {
         <SafeAreaView customStyle={customStyle.container}>
             <FlatList
                 data={cardData}
-                renderItem={({item})=><JobCard item={item} customContainerStyle={{marginBottom:15}} status={true}/>}
+                renderItem={({item})=><JobCard item={item} customContainerStyle={{marginBottom:15}} status={true``}/>}
                 showsVerticalScrollIndicator={false}
             />
         </SafeAreaView>

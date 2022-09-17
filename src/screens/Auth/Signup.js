@@ -14,6 +14,9 @@ function Signup(props) {
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    //--------------------------------functions -----------------------------------------------
+    
+    //--------------------------------functions -----------------------------------------------
     return (
         
         <SafeAreaView customStyle={customStyles.container}>
