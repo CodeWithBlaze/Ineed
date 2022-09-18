@@ -5,7 +5,7 @@ import Auth from './src/components/navigation/Auth';
 import AppNavigation from './src/screens/navigation/AppNavigation';
 
 function MainApp(props) {
-    const user = useSelector(state=>state.user);
+    const user = useSelector(state=>state.signup.user);
     return (
         <NavigationContainer>
         <RootSiblingParent>

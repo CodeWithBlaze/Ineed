@@ -9,9 +9,21 @@ function InputBox({
     customStyle,
     type,
     secureEntry,
-    onError,
-    multiline=false
+    multiline=false,
+    validator,
+    name
 }) {
+    function hasValidationFailed(){
+        if(name && name!=null && name!='' && validator && validator.isFieldInError(name)){
+            const errors = validator.getErrorsInField(name);
+            if(errors.length > 0) return {hasError:true,errors:errors}
+            else return {hasError:false};
+        }
+        else
+            return {hasError:false};
+
+    }
+    const checkInput  = hasValidationFailed()
     return (
         <>
         <TextInput
@@ -21,10 +33,12 @@ function InputBox({
             keyboardType={type}
             secureTextEntry={secureEntry?true:false}
             onChangeText={(nt)=>setValue(nt)}
-            style={[styles.container,customStyle,onError?styles.errorStyle:null]}
+            style={[styles.container,customStyle,checkInput.hasError?styles.errorStyle:null]}
             multiline={multiline}
         />
-        {onError && <InfoHeadingText info={onError}/>}
+        {  checkInput.hasError &&
+          <InfoHeadingText info={checkInput.errors[0]} customTextStyle={{color:'red',textAlign:'center'}}/>
+        }
         </>
         
         

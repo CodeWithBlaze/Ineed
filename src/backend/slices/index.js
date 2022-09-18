@@ -1,9 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import AuthSlice from "./AuthSlice";
+import SignUpSlice from "./SignUpSlice";
+//---------------------Middlewares-------------------------
+import SignUpMiddleware from "../middleware/SignUpMiddleware";
+
 
 const store = configureStore({
     reducer:{
-        auth:AuthSlice.reducer
-    }
+        signup:SignUpSlice.reducer
+    },
+    middleware:(getDefaultMiddleware) => getDefaultMiddleware().concat(SignUpMiddleware),
 })
 export default store;

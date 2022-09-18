@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity,StyleSheet,View, Image } from 'react-native';
+import { Text, TouchableOpacity,StyleSheet,View, Image, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {PRIMARY_COLOR} from '../../constant/Color';
 function Button({
@@ -11,15 +11,16 @@ function Button({
     customIconStyle,
     CustomIcon=null,
     iconSize=24,
-    customTextStyle
+    customTextStyle,
+    isLoading
 }) {
     return (
-        <TouchableOpacity onPress={()=>onPress()} style={[styles.container,customButtonStyle]}>
+        <TouchableOpacity onPress={onPress} style={[styles.container,customButtonStyle]} disabled={isLoading}>
                 {CustomIcon}
                 {image && <Image source={{uri:image}} style={{width:iconSize,height:iconSize}}/>}
                 {icon && <FontAwesome name={icon} size={iconSize} color="black" style={[styles.iconStyle,customIconStyle]}/>}
-                {title && <Text style={[{marginLeft:icon?10:0},styles.buttonText,customTextStyle]}>{title}</Text>}
-           
+                {title && !isLoading && <Text style={[{marginLeft:icon?10:0},styles.buttonText,customTextStyle]}>{title}</Text>}
+                {isLoading && <ActivityIndicator color={'white'}/>}
         </TouchableOpacity>
     );
 }

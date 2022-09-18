@@ -8,14 +8,32 @@ import InputBox from '../../components/UI/InputBox';
 import Button from '../../components/UI/Button';
 import { FacebookProvider, GoogleProvider } from '../../components/provider/Providers';
 import LinkText from '../../components/UI/LinkText';
+import { useValidation } from 'react-native-form-validator';
+import { SignUpValidator } from '../../utils/validations/AuthValidation';
+import { showErrorToast,showSuccessToast,showInfoToast } from '../../utils/toast/Toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { SignUpActions } from '../../backend/slices/SignUpSlice';
 
 function Signup(props) {
     const navigation = useNavigation();
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const validator = useValidation({state: { email,password,name }});
+    //-------------------------------redux state-----------------------------------------------
+    const error = useSelector(state=>state.signup.error);
+    const isLoading = useSelector(state=>state.signup.isLoading);
+    const dispatch = useDispatch();
     //--------------------------------functions -----------------------------------------------
-    
+    function onSubmit(){
+        if(SignUpValidator(validator)){
+            dispatch({type:SignUpActions.signupStarted.type,payload:{
+                email,
+                password
+            }})
+        }
+        
+    }
     //--------------------------------functions -----------------------------------------------
     return (
         
@@ -29,12 +47,16 @@ function Signup(props) {
                 value={name}
                 type={'default'}
                 setValue={setName}
+                name={'name'}
+                validator={validator}
                 />
                 <InputBox
                 placeholder={'Email'}
                 value={email}
                 type={'email-address'}
                 setValue={setEmail}
+                name={'email'}
+                validator={validator}
                 />
                 <InputBox
                 placeholder={'Password'}
@@ -42,9 +64,13 @@ function Signup(props) {
                 type={'default'}
                 secureEntry={true}
                 setValue={setPassword}
+                name={'password'}
+                validator={validator}
                 />
                 <Button
                 title={'Create Account'}
+                onPress={()=>onSubmit()}
+                isLoading={isLoading}
                 customButtonStyle={customStyles.button}
                 customTextStyle={customStyles.buttonText}
                 />
@@ -58,7 +84,7 @@ function Signup(props) {
                 onPress={()=>navigation.navigate('login')}
                 />
             </Form>
-            
+            { error && showErrorToast(error)}
         </SafeAreaView>
         
     );
