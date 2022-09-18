@@ -16,6 +16,9 @@ const SignUpSlice = createSlice({
         signupFailed:function(state,action){
             state.error = action.payload.error;
             state.isLoading = false;
+        },
+        authStateChange:function(state,action){
+            state.user = action.payload.user;
         }
     }
 })

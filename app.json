@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "ineed",
+    "scheme":"ineed",
     "slug": "ineed",
     "version": "1.0.0",
     "orientation": "portrait",

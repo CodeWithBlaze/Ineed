@@ -1,12 +1,13 @@
 import React from 'react';
-import { Text,View,StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Text,View,StyleSheet, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-function IconText({icon,iconSize=24,iconColor='white',title,customContainerStyle,customTextStyle,onPress=null}) {
+function IconText({icon,iconSize=24,iconColor='white',title,customContainerStyle,customTextStyle,onPress=null,isLoading,activityColor}) {
     return (
         <TouchableWithoutFeedback onPress={onPress}>
             <View style={[styles.container,customContainerStyle]}>
             {icon && <FontAwesome name={icon} size={iconSize} color={iconColor} />}
-            {title && <Text style={[styles.textStyle,customTextStyle]}>{title}</Text>}
+            {title && !isLoading && <Text style={[styles.textStyle,customTextStyle]}>{title}</Text>}
+            {isLoading && <ActivityIndicator color={activityColor||'white'} style={{marginHorizontal:5}}/>}
             </View>
         </TouchableWithoutFeedback>        
     );

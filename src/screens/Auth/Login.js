@@ -6,13 +6,29 @@ import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from '../../constant/Color';
 import Form from '../../components/form/Form';
 import InputBox from '../../components/UI/InputBox';
 import Button from '../../components/UI/Button';
-import { FacebookProvider, GoogleProvider } from '../../components/provider/Providers';
 import LinkText from '../../components/UI/LinkText';
+import { useDispatch, useSelector } from 'react-redux';
+import { showErrorToast } from '../../utils/toast/Toast';
+import { useValidation } from 'react-native-form-validator';
+import { AuthValidator } from '../../utils/validations/AuthValidation';
+import { SignInActions } from '../../backend/slices/SignInSlice';
+import GoogleSignIn from '../../backend/hooks/GoogleSignIn';
 
 function Login(props) {
     const navigation = useNavigation();
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const validator = useValidation({state:{email,password}});
+    const dispatch = useDispatch();
+    //----------------------------------------redux variables--------------------------
+    const isLoading = useSelector(state=>state.signin.isLoading);
+    const error = useSelector(state=>state.signin.error);
+    //-----------------------------------------function---------------------------------
+    function onSubmit(){
+        const authAction = {type:SignInActions.SignInStarted.type,payload:{email,password,method}};
+        if(AuthValidator(validator))
+            dispatch(authAction)
+    }
     return (
         <SafeAreaView customStyle={customStyles.container}>
             <Image source={{uri:'https://res.cloudinary.com/codecafe/image/upload/v1662698767/IneedAsset/WorkingMan_jk1i6f.png'}}
@@ -24,6 +40,8 @@ function Login(props) {
                 value={email}
                 type={'email-address'}
                 setValue={setEmail}
+                name={'email'}
+                validator={validator}
                 />
                 <InputBox
                 placeholder={'Password'}
@@ -31,15 +49,18 @@ function Login(props) {
                 type={'default'}
                 secureEntry={true}
                 setValue={setPassword}
+                name={'password'}
+                validator={validator}
                 />
                 <Button
                 title={'Sign In'}
+                isLoading={isLoading}
+                onPress={onSubmit}
                 customButtonStyle={customStyles.button}
                 customTextStyle={customStyles.buttonText}
                 />
                 <View style={styles.providerContainer}>
-                    <GoogleProvider title={'Sign In'}/>
-                    <FacebookProvider title={'Sign In'}/>
+                    <GoogleSignIn/>
                 </View>
                 <LinkText 
                 title={'Do not have a account ? Create one'} 
@@ -47,6 +68,7 @@ function Login(props) {
                 onPress={()=>navigation.navigate('signup')}
                 />
             </Form>
+            {error && showErrorToast(error,()=>dispatch({type:SignInActions.hideError.type}))}
         </SafeAreaView>
     );
 }

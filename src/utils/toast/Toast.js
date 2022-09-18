@@ -1,12 +1,13 @@
 import Toast from 'react-native-root-toast';
 
-export function showErrorToast(message){
+export function showErrorToast(message,updateError){
     Toast.show(message, {
         duration: Toast.durations.LONG,
         position: 40,
         shadow: true,
         backgroundColor:'#FF8A8A',
         textColor:'#FF2E2E',
+        onHide:updateError,
         opacity:1,
         animation: true,
         hideOnPress: true,

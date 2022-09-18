@@ -7,7 +7,18 @@ import Button from '../../../components/UI/Button';
 import CircularIconButton from '../../../components/UI/CircularIconButton';
 import Seperator from '../../../components/UI/Seperator';
 import IconText from '../../../components/UI/IconText';
+import { useDispatch, useSelector } from 'react-redux';
+import { showErrorToast } from '../../../utils/toast/Toast';
+import { LogOutActions } from '../../../backend/slices/LogOutSlice';
+
 function Profile(props) {
+    const isLoading = useSelector(state=>state.logout.isLoading);
+    const error = useSelector(state=>state.logout.error);
+    const dispatch = useDispatch();
+    //-------------------------------------function-------------------------------------
+    function onLogout(){
+        dispatch({type:LogOutActions.LogOutStarted.type})
+    }
     return (
         <SafeAreaView customStyle={{flex:1,backgroundColor:PRIMARY_COLOR,paddingTop:150}}>
                <View style={styles.profileImage}>
@@ -53,13 +64,17 @@ function Profile(props) {
                     />
                     <IconText 
                     icon={'sign-out'} 
-                    title={'Logout'} 
+                    title={'Logout'}
+                    isLoading={isLoading}
+                    onPress={()=>onLogout()}
+                    activityColor={'red'} 
                     iconColor={'red'}
                     customContainerStyle={{marginBottom:20}}
                     customTextStyle={{marginLeft:15,color:'red'}}
                     />
                 </View>
             </ScrollView>
+            {error && showErrorToast()}
         </SafeAreaView>
     );
 }

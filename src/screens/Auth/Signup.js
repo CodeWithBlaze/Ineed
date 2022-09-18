@@ -6,27 +6,25 @@ import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from '../../constant/Color';
 import Form from '../../components/form/Form';
 import InputBox from '../../components/UI/InputBox';
 import Button from '../../components/UI/Button';
-import { FacebookProvider, GoogleProvider } from '../../components/provider/Providers';
 import LinkText from '../../components/UI/LinkText';
 import { useValidation } from 'react-native-form-validator';
-import { SignUpValidator } from '../../utils/validations/AuthValidation';
-import { showErrorToast,showSuccessToast,showInfoToast } from '../../utils/toast/Toast';
+import { AuthValidator } from '../../utils/validations/AuthValidation';
+import { showErrorToast} from '../../utils/toast/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { SignUpActions } from '../../backend/slices/SignUpSlice';
 
 function Signup(props) {
     const navigation = useNavigation();
-    const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    const validator = useValidation({state: { email,password,name }});
+    const validator = useValidation({state: { email,password }});
     //-------------------------------redux state-----------------------------------------------
     const error = useSelector(state=>state.signup.error);
     const isLoading = useSelector(state=>state.signup.isLoading);
     const dispatch = useDispatch();
     //--------------------------------functions -----------------------------------------------
     function onSubmit(){
-        if(SignUpValidator(validator)){
+        if(AuthValidator(validator)){
             dispatch({type:SignUpActions.signupStarted.type,payload:{
                 email,
                 password
@@ -42,15 +40,7 @@ function Signup(props) {
                 style={styles.image}
             />
             <Form customStyle={customStyles.form} logoVisible>
-                <InputBox
-                placeholder={'Name'}
-                value={name}
-                type={'default'}
-                setValue={setName}
-                name={'name'}
-                validator={validator}
-                />
-                <InputBox
+               <InputBox
                 placeholder={'Email'}
                 value={email}
                 type={'email-address'}
@@ -74,10 +64,6 @@ function Signup(props) {
                 customButtonStyle={customStyles.button}
                 customTextStyle={customStyles.buttonText}
                 />
-                <View style={styles.providerContainer}>
-                    <GoogleProvider title={'Sign Up'}/>
-                    <FacebookProvider title={'Sign Up'}/>
-                </View>
                 <LinkText 
                 title={'Already have a account ? Login here'} 
                 customStyle={customStyles.loginText}
@@ -93,17 +79,10 @@ const styles = StyleSheet.create({
     keyView:{flex:1},
     image:{
         marginTop:15,
-        width:200,
-        height:200,
-        marginBottom:5
+        width:300,
+        height:300,
+        marginBottom:10
     },
-    providerContainer:{
-        marginTop:15,
-        width:'100%',
-        flexDirection:'row',
-        justifyContent:'space-around',
-        marginBottom:15
-    }
 })
 const customStyles = {
     container:{
@@ -122,6 +101,7 @@ const customStyles = {
         backgroundColor:DARK_PRIMARY_COLOR,
         elevation:5,
         borderRadius:30,
+        marginBottom:15
     },
     buttonText:{
         fontSize:16
