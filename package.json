@@ -28,6 +28,7 @@
     "react-native": "0.69.5",
     "react-native-agora-chat": "^1.0.7",
     "react-native-dropdown-picker": "^5.4.2",
+    "react-native-easy-bottomsheet": "^1.0.8",
     "react-native-form-validator": "^0.5.1",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-ratings": "^8.1.0",

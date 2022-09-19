@@ -10,10 +10,12 @@ import IconText from '../../../components/UI/IconText';
 import { useDispatch, useSelector } from 'react-redux';
 import { showErrorToast } from '../../../utils/toast/Toast';
 import { LogOutActions } from '../../../backend/slices/LogOutSlice';
+import { useNavigation } from '@react-navigation/native';
 
 function Profile(props) {
     const isLoading = useSelector(state=>state.logout.isLoading);
     const error = useSelector(state=>state.logout.error);
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     //-------------------------------------function-------------------------------------
     function onLogout(){
@@ -37,7 +39,7 @@ function Profile(props) {
                     <Text style={styles.description}>I am a singer and dancer and well enough experienced to teach other about singing.Looking forward to teach you</Text>
                 </View>
                 <View style={styles.profileDetailButtonContainer}>
-                    <Button title={'Edit Profile'} customButtonStyle={customStyle.customEditProfile}/>
+                    <Button title={'Edit Profile'} customButtonStyle={customStyle.customEditProfile} onPress={()=>navigation.navigate('EditProfile')}/>
                     <CircularIconButton icon={'share-alt'} 
                     iconSize={24} 
                     size={50}

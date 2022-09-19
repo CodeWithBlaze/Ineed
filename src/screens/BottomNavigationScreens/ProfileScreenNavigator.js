@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import EditProfile from './ProfileNavigation/EditProfile';
 import Profile from './ProfileNavigation/Profile';
 
 
@@ -11,6 +12,7 @@ function ProfileScreenNavigator() {
         headerShown:false
     }}>
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );
 }
