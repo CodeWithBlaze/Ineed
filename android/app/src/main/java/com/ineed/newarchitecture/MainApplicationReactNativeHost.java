@@ -1,4 +1,4 @@
-package com.sagnik20013.ineed.newarchitecture;
+package com.ineed.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.sagnik20013.ineed.BuildConfig;
-import com.sagnik20013.ineed.newarchitecture.components.MainComponentsRegistry;
-import com.sagnik20013.ineed.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.ineed.BuildConfig;
+import com.ineed.newarchitecture.components.MainComponentsRegistry;
+import com.ineed.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

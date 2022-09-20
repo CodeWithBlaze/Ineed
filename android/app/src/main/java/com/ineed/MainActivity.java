@@ -1,4 +1,4 @@
-package com.sagnik20013.ineed;
+package com.ineed;
 
 import android.os.Build;
 import android.os.Bundle;

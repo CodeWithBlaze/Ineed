@@ -6,13 +6,19 @@ function useCamera(props) {
     async function getCamera(){
         if(status!=null && !status.granted){
             const result = await requestPermission();
-            console.log(result);
+            if(result.granted){
+                const photo = await ImagePicker.launchCameraAsync();
+                return photo.uri;
+            }
         }
+        else if(status != null){
+            const photo = await ImagePicker.launchCameraAsync();
+            return photo.uri;
+        }
+            
+        
     }
-    useEffect(()=>{
-        getCamera();
-    },[])
-    return status
+    return [status,getCamera]
 }
 
 export default useCamera;

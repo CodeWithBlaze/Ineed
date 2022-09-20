@@ -25,7 +25,7 @@ function Login(props) {
     const error = useSelector(state=>state.signin.error);
     //-----------------------------------------function---------------------------------
     function onSubmit(){
-        const authAction = {type:SignInActions.SignInStarted.type,payload:{email,password,method}};
+        const authAction = {type:SignInActions.SignInStarted.type,payload:{email,password}};
         if(AuthValidator(validator))
             dispatch(authAction)
     }
