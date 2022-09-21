@@ -14,7 +14,7 @@ export async function uploadFile(folder,uid,file,updateProgress,onFinish){
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             updateProgress(progress);
         },
-        err=>console.log(err),
+        err=>console.log(err.message),
         ()=>{
             getDownloadURL(uploader.snapshot.ref).then(url=>{
                 onFinish(url);

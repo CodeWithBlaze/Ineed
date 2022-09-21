@@ -1,7 +1,6 @@
 {
   "expo": {
     "name": "ineed",
-    "scheme": "ineed",
     "slug": "ineed",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,19 +21,18 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.ineed",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.ineed",
-      "versionCode":1
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "8540ccd2-d817-470d-ba66-04dfce71c2c8"
+        "projectId": "0cc5220f-f6a4-4b3a-ac02-13240c44618c"
       }
     }
   }
