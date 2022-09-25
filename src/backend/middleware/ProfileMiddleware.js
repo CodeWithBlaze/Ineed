@@ -1,12 +1,12 @@
-import { addDocumentWithId } from "../functions/Database";
+import { addDocumentWithId, getDocumentWithId } from "../functions/Database";
 import {ProfileActions} from "../slices/ProfileSlice";
 
+const collection_name = "Profile";
 
 const ProfileMiddleware = ({dispatch}) => next => async action =>{
     if(action.type === ProfileActions.setProfileStarted.type){
         const {profileData,uid} = action.payload;
-        console.log(profileData);
-        addDocumentWithId('Profile',uid,profileData)
+        addDocumentWithId(collection_name,uid,profileData)
         .then(() => {
             dispatch({type:ProfileActions.setProfileSuccess.type,payload:{profile:profileData}})
        })
@@ -16,6 +16,17 @@ const ProfileMiddleware = ({dispatch}) => next => async action =>{
             dispatch({type:ProfileActions.setProfileFail.type,payload:{error:errorMessage}})
         });
        next(action);
+    }
+    else if(action.type === ProfileActions.getProfileStarted.type){
+        const { uid } = action.payload;
+        getDocumentWithId(collection_name,uid).then(res=>{
+           dispatch({type:ProfileActions.getProfileSuccess.type,payload:{profile:res.data()}});
+        }).catch(err=>{
+            const errorMessage = err.message;
+            console.log(errorMessage);
+            dispatch({type:ProfileActions.getProfileFail.type,payload:{error:errorMessage}})
+        })
+        next(action);
     }
     else
         next(action);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text,StyleSheet,View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { updateDocumentWithId } from '../../../backend/functions/Database';
 import { uploadFile } from '../../../backend/functions/Storage';
 import { ProfileActions } from '../../../backend/slices/ProfileSlice';
 import BottomSheetModal from '../../../components/container/BottomSheet';
@@ -17,22 +18,28 @@ import useCamera from '../../../hooks/useCamera';
 import useGallery from '../../../hooks/useGallery';
 
 const initialProfileImage = 'https://res.cloudinary.com/codecafe/image/upload/v1663577461/IneedAsset/avatar_vaeywc.png';
-function EditProfile(props) {
+function EditProfile({route}) {
+    //--------------------route data-----------------------------
+    const profileData = route.params.profileData;
+    //--------------------route data-----------------------------
+    
     //-----------------states---------------------------------
     const pickImage = useGallery();
     const [status,getCamera] = useCamera();
     const [isVisible, setVisible] = useState(false);
     const [imageUploadProgress,setImageUploadProgress] = useState(0);
     //-------------------inputs-------------------------------
-    const [profileImage,setProfileImage] = useState(initialProfileImage)
-    const [name,setName] = useState('');
-    const [description,setDescription] = useState('');
+    const [profileImage,setProfileImage] = useState(profileData.image || initialProfileImage)
+    const [name,setName] = useState(profileData.name || '');
+    const [description,setDescription] = useState(profileData.description || '');
+    
     //--------------------Redux---------------------------------
     const user = useSelector(state=>state.signup.user);
     const isLoading = useSelector(state=>state.profile.isLoading);
     const dispatch = useDispatch()
     //--------------------functions------------------------------
-    function onFinish(url){
+
+    function onProfileDataUploadFinish(url){
         const profileData = {
             name,
             description,
@@ -41,7 +48,13 @@ function EditProfile(props) {
         }
         dispatch({type:ProfileActions.setProfileStarted.type,payload:{profileData:profileData,uid:user.uid}})
     }
-    async function uploadProfileData(){
+    function onFinishImageUpdate(url){
+        updateDocumentWithId('Profile',user.uid,{image:url}).then(()=>{
+            dispatch({type:ProfileActions.getProfileStarted.type,payload:{uid:user.uid}})
+        })
+        .catch(err=>console.log(err))
+    }
+    async function uploadProfileData(onFinish){
         setImageUploadProgress(0);
         await uploadFile('Profile',user.uid,profileImage,setImageUploadProgress,onFinish);
     }
@@ -97,7 +110,7 @@ function EditProfile(props) {
                 setValue={setDescription}
                 customStyle={{...customstyle.input,...customstyle.multilineBox,marginBottom:15}}
                 />
-                <Button onPress={uploadProfileData} isLoading={isLoading} title={'Update Profile'} customButtonStyle={{borderRadius:5,marginBottom:80}}/>
+                <Button onPress={()=>uploadProfileData(onProfileDataUploadFinish)} isLoading={isLoading} title={'Update Profile'} customButtonStyle={{borderRadius:5,marginBottom:80}}/>
                 <BottomSheetModal 
                 isVisible={isVisible} 
                 setVisible={setVisible}
@@ -142,5 +155,6 @@ const customstyle = {
         paddingTop:20,
         textAlignVertical:'top'
     },
+    
 }
 export default EditProfile;

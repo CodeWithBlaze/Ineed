@@ -4,11 +4,14 @@ import SafeAreaView from '../../components/container/SafeAreaView';
 import Form from '../../components/form/Form';
 import Button from '../../components/UI/Button';
 import InputBox from '../../components/UI/InputBox';
-import {  DARK_GREY, PRIMARY_COLOR } from '../../constant/Color';
+import {  PRIMARY_COLOR } from '../../constant/Color';
 import DropDownPicker from 'react-native-dropdown-picker';
-import  DateTimePicker  from '@react-native-community/datetimepicker';
+import { calculateDateDuration } from '../../utils/DateDuration';
+
 import ListDetails from '../../components/UI/ListDetails';
 import InfoHeadingText from '../../components/UI/InfoHeadingText';
+import CustomDatePicker from '../../utils/CustomDatePicker';
+import DaysSelector from '../../components/UI/DaysSelector';
 function JobForm(props) {
     //---------------Mode Picker------------------------
     const [open, setOpen] = useState(false);
@@ -23,7 +26,8 @@ function JobForm(props) {
     const [itemsDuration, setItemsDuration] = useState([
         {label: '1 Day', value: 'one'},
         {label: 'One Week', value: 'week'},
-        {label: 'One Month', value: 'month'}
+        {label: 'One Month', value: 'month'},
+        {label:'Custom',value:'custom'}
     ]);
     //---------------Date Picker------------------------
     const [date, setDate] = useState(new Date());
@@ -31,6 +35,15 @@ function JobForm(props) {
     const onChange = (event, selectedDate) => {
         setShow(false);
         setDate(selectedDate);
+        if(valueDuration === 'week' || valueDuration === 'month')
+            setEndDate(calculateDateDuration(valueDuration,selectedDate))
+    };
+    //second date picker
+    const [enddate, setEndDate] = useState(new Date());
+    const [showEndDate, setShowEndDate] = useState(false);
+    const onChangeEndDate = (event, selectedDate) => {
+        setShowEndDate(false);
+        setEndDate(selectedDate);
     };
     //---------------Time Picker------------------------
     const [time, setTime] = useState(new Date());
@@ -48,6 +61,7 @@ function JobForm(props) {
     const [tags,setTags] = useState([]);
     const [tagInput,setTagInput] = useState('');
     const [Cancellation,setCancellation] = useState('');
+    const [selectedDays,setSelectedDays] = useState([]);
     //------------Tags Function--------------------
     function addTag(){
         let tempTagInput = tagInput;
@@ -66,6 +80,7 @@ function JobForm(props) {
     function deleteTag(tag){
         setTags(tags.filter(t=>t!=tag))
     }
+    
     return (
         <SafeAreaView customStyle={{flex:1}}> 
             
@@ -85,43 +100,6 @@ function JobForm(props) {
                 value={jobDescription}
                 setValue={setJobDescription}
                 />
-                <Text style={styles.formSubHeading}>Select Date and Time</Text>
-                <Text style={styles.displayBox} onPress={()=>setShow(true)}>{date.toDateString()}</Text>
-                <Text style={styles.displayBox} onPress={()=>setShowTime(true)}>{time.toTimeString()}</Text>
-                {
-                    show && 
-                    <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    is24Hour={true}
-                    onChange={onChange}
-                />
-                }
-                {
-                    showTime && 
-                    <DateTimePicker
-                    testID="dateTimePicker"
-                    value={time}
-                    is24Hour={true}
-                    mode={'time'}
-                    onChange={onChangeTime}
-                />
-                }
-                <Text style={styles.formSubHeading}>Select Mode of teaching</Text>
-                <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    listMode={'MODAL'}
-                    placeholder={'Virtual'}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    style={{backgroundColor:'#EFEEFF',borderWidth:0,marginBottom:15}}
-                    textStyle={{fontFamily:'Primary-Semibold',color:PRIMARY_COLOR}}
-                    labelStyle={{color:PRIMARY_COLOR}}
-                />
-                
                 <Text style={styles.formSubHeading}>Select Duration</Text>
                 <DropDownPicker
                     open={openDuration}
@@ -133,6 +111,59 @@ function JobForm(props) {
                     setValue={setValueDuration}
                     setItems={setItemsDuration}
                     style={{backgroundColor:'#EFEEFF',borderWidth:0,marginBottom:30}}
+                    textStyle={{fontFamily:'Primary-Semibold',color:PRIMARY_COLOR}}
+                    labelStyle={{color:PRIMARY_COLOR}}
+                />
+                { valueDuration === 'one' ? 
+                    <CustomDatePicker
+                    show={show}
+                    setShow={setShow}
+                    date={date}
+                    onChange={onChange}
+                    message={'Select a date'}
+                    />
+                    :
+                    <View style={{width:'100%',marginBottom:60}}>
+                        <CustomDatePicker
+                        show={show}
+                        setShow={setShow}
+                        date={date}
+                        onChange={onChange}
+                        message={'Select starting date'}
+                        />
+                        <CustomDatePicker
+                        show={showEndDate}
+                        setShow={setShowEndDate}
+                        date={valueDuration === 'custom'?enddate:calculateDateDuration(valueDuration,date)}
+                        onChange={onChangeEndDate}
+                        message={valueDuration === 'custom'?'Select a date':'Ending date (auto generated)'}
+                        />
+                    </View>
+                }
+                <DaysSelector selectedDays={selectedDays} setSelectedDays={setSelectedDays}/>
+                {
+                showTime && 
+                <DateTimePicker
+                testID="dateTimePicker"
+                value={time}
+                is24Hour={true}
+                mode={'time'}
+                onChange={onChangeTime}
+                />
+                }
+                <Text style={styles.formSubHeading}>Select Time of teaching</Text>
+                <Text style={styles.displayBox} onPress={()=>setShowTime(true)}>{time.toTimeString()}</Text>
+                <Text style={styles.formSubHeading}>Select Mode of teaching</Text>
+                <DropDownPicker
+                    open={open}
+                    value={value}
+                    items={items}
+                    listMode={'MODAL'}
+                    placeholder={'Virtual'}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    style={{backgroundColor:'#EFEEFF',borderWidth:0,marginBottom:15}}
                     textStyle={{fontFamily:'Primary-Semibold',color:PRIMARY_COLOR}}
                     labelStyle={{color:PRIMARY_COLOR}}
                 />
@@ -175,7 +206,10 @@ function JobForm(props) {
                 setValue={setCancellation}
                 />
                 <InfoHeadingText info={'This value will be shown to the users.'}/>
-                <Button title={'Create Job'} customButtonStyle={{borderRadius:5,marginBottom:80}}/>
+                <Button title={'Create Job'} 
+                customButtonStyle={{borderRadius:5,marginBottom:80}}
+                onPress={()=>console.log(selectedDays)}
+                />
             </Form>
             
         </SafeAreaView>

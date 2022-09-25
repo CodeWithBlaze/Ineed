@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text,View,StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text,View,StyleSheet, ScrollView} from 'react-native';
 import SafeAreaView from '../../../components/container/SafeAreaView';
 import { DARK_GREY, LIGHT_GREY_COLOR, PRIMARY_COLOR } from '../../../constant/Color';
 import CircularImage from '../../../components/UI/CicularImage';
@@ -11,21 +11,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showErrorToast } from '../../../utils/toast/Toast';
 import { LogOutActions } from '../../../backend/slices/LogOutSlice';
 import { useNavigation } from '@react-navigation/native';
+import { ProfileActions } from '../../../backend/slices/ProfileSlice';
+import ScreenLoading from '../../UI/ScreenLoading';
+
 
 function Profile(props) {
     const isLoading = useSelector(state=>state.logout.isLoading);
+    const isProfileLoading = useSelector(state=>state.profile.isLoading);
+    const profileData = useSelector(state=>state.profile.profile);
+    const user = useSelector(state=>state.signup.user);
     const error = useSelector(state=>state.logout.error);
+    //profile error
     const navigation = useNavigation();
     const dispatch = useDispatch();
     //-------------------------------------function-------------------------------------
     function onLogout(){
         dispatch({type:LogOutActions.LogOutStarted.type})
     }
+    useEffect(()=>{
+        dispatch({type:ProfileActions.getProfileStarted.type,payload:{uid:user.uid}})
+    },[])
+    if(isProfileLoading || !profileData)
+        return <ScreenLoading/>
     return (
         <SafeAreaView customStyle={{flex:1,backgroundColor:PRIMARY_COLOR,paddingTop:150}}>
                <View style={styles.profileImage}>
                <CircularImage 
-                url={'https://i.pinimg.com/originals/de/22/f4/de22f494502d8797c24c9f235320a644.jpg'}
+                url={profileData.image}
                 size={150}
                 showRing
                 customContainerStyle={customStyle.customImageContainer}
@@ -34,12 +46,15 @@ function Profile(props) {
                 
             <ScrollView style={styles.container}>
                 <View style={styles.profileDetails}>
-                    <Text style={styles.profileName}>Nancy Momoland</Text>
+                    <Text style={styles.profileName}>{profileData.name}</Text>
                     <Text style={styles.location}>Los Angeles, New York</Text>
-                    <Text style={styles.description}>I am a singer and dancer and well enough experienced to teach other about singing.Looking forward to teach you</Text>
+                    <Text style={styles.description}>{profileData.description}</Text>
                 </View>
                 <View style={styles.profileDetailButtonContainer}>
-                    <Button title={'Edit Profile'} customButtonStyle={customStyle.customEditProfile} onPress={()=>navigation.navigate('EditProfile')}/>
+                    <Button 
+                    title={'Edit Profile'} 
+                    customButtonStyle={customStyle.customEditProfile} 
+                    onPress={()=>navigation.navigate('EditProfile',{profileData})}/>
                     <CircularIconButton icon={'share-alt'} 
                     iconSize={24} 
                     size={50}

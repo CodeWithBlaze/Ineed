@@ -1,7 +1,12 @@
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc,updateDoc,getDoc } from "firebase/firestore"; 
 import { firestore } from "../../config/Firebase";
 
 export async function addDocumentWithId(col,id,data){
-    const value = await setDoc(doc(firestore, col, id), data);
-    console.log(value);
+    return await setDoc(doc(firestore, col, id), data);
+}
+export async function getDocumentWithId(col,id){
+    return await getDoc(doc(firestore,col,id))
+}
+export async function updateDocumentWithId(col,id,data){
+    return await updateDoc(doc(firestore,col,id),data)
 }

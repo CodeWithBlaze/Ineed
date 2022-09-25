@@ -16,6 +16,19 @@ const ProfileSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload.error
         },
+        getProfileStarted:function(state,action){
+            state.isLoading = true;
+            console.log(state.isLoading);
+            state.error = '';
+        },
+        getProfileSuccess:function(state,action){
+            state.isLoading = false;
+            state.profile = action.payload.profile;
+        },
+        getProfileFail:function(state,action){
+            state.isLoading = false;
+            state.error = action.payload.error;
+        }
     }
 })
 

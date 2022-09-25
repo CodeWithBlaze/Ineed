@@ -1,10 +1,10 @@
 import {storage} from '../../config/Firebase';
 import { ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
-import { extractFileNameFromUri } from '../../utils/common/extra';
+import { extractExtensionFromUri } from '../../utils/common/extra';
 
 export async function uploadFile(folder,uid,file,updateProgress,onFinish){
-    const filename = extractFileNameFromUri(file);
-    const storageRef = ref(storage,`${folder}/${uid}/${filename}`)
+    const extension = extractExtensionFromUri(file);
+    const storageRef = ref(storage,`${folder}/${uid}/${uid+extension}`)
     const image = await fetch(file);
     const image_blob = await image.blob();
     const uploader = uploadBytesResumable(storageRef,image_blob)
