@@ -12,7 +12,16 @@ import ListDetails from '../../components/UI/ListDetails';
 import InfoHeadingText from '../../components/UI/InfoHeadingText';
 import CustomDatePicker from '../../utils/CustomDatePicker';
 import DaysSelector from '../../components/UI/DaysSelector';
+import { useDispatch, useSelector } from 'react-redux';
+import  DateTimePicker  from '@react-native-community/datetimepicker';
+import { addDocument } from '../../backend/functions/Database';
+import { showErrorToast, showSuccessToast } from '../../utils/toast/Toast';
+import { NotificationActions } from '../../backend/slices/NotificationSlice';
+
 function JobForm(props) {
+    //--------------redux------------------------------
+    const user = useSelector(state=>state.signup.user);
+    const dispatch = useDispatch();
     //---------------Mode Picker------------------------
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('virtual');
@@ -80,7 +89,52 @@ function JobForm(props) {
     function deleteTag(tag){
         setTags(tags.filter(t=>t!=tag))
     }
+    //---------------------loaders-------------------------
+    const [isLoading,setLoading] = useState(false);
+    //---------------------loaders-------------------------
     
+    function SubmitForm(){
+        setLoading(true);
+        const formData = {
+            title:jobTitle,
+            description:jobDescription,
+            duration:valueDuration,
+            startingDate:date,
+            endingDate:enddate,
+            days:selectedDays,
+            time:time,
+            mode:value,
+            fees:fee,
+            enrollLimit:enrollLimit,
+            experience:experience,
+            tags:tags,
+            cancellationChance:Cancellation,
+            currentlyEnrolledStudent:0,
+            status:'active', //status can be active,inactive,expired
+            uid:user.uid
+        }
+        addDocument('Jobs',formData).then(()=>{
+            setLoading(false);
+            showSuccessToast('Job Created Successfully')
+            const notification = {
+                type:'success',
+                title:'You created a new job',
+                subtitle:`Job named ${jobTitle} was created Successfully`,
+                uid:user.uid
+            }
+            dispatch({type:NotificationActions.addNotificationDatabaseStarted.type,payload:{notification}})
+        }).catch(err=>{
+            setLoading(false);
+            showErrorToast(err.message)
+            const notification = {
+                type:'fail',
+                title:'Job Creation Failed',
+                subtitle:`Job named ${jobTitle} was not created`,
+                uid:user.uid
+            }
+            dispatch({type:NotificationActions.addNotificationDatabaseStarted.type,payload:{notification}})
+        })
+    }
     return (
         <SafeAreaView customStyle={{flex:1}}> 
             
@@ -208,7 +262,8 @@ function JobForm(props) {
                 <InfoHeadingText info={'This value will be shown to the users.'}/>
                 <Button title={'Create Job'} 
                 customButtonStyle={{borderRadius:5,marginBottom:80}}
-                onPress={()=>console.log(selectedDays)}
+                onPress={SubmitForm}
+                isLoading={isLoading}
                 />
             </Form>
             

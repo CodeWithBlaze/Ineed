@@ -29,7 +29,8 @@ function Profile(props) {
         dispatch({type:LogOutActions.LogOutStarted.type})
     }
     useEffect(()=>{
-        dispatch({type:ProfileActions.getProfileStarted.type,payload:{uid:user.uid}})
+        if(!profileData)
+            dispatch({type:ProfileActions.getProfileStarted.type,payload:{uid:user.uid}})
     },[])
     if(isProfileLoading || !profileData)
         return <ScreenLoading/>

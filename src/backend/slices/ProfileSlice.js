@@ -23,7 +23,7 @@ const ProfileSlice = createSlice({
         },
         getProfileSuccess:function(state,action){
             state.isLoading = false;
-            state.profile = action.payload.profile;
+            state.profile = action.payload.profile ?  action.payload.profile:null;
         },
         getProfileFail:function(state,action){
             state.isLoading = false;

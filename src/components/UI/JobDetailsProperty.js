@@ -17,7 +17,7 @@ function getColorBasedOnStatus(status){
     else
         return 'orange'
 }
-function JobDetailsProperty({item,iconColor,textColor,size,customContainerStyle={},status}) {
+function JobDetailsProperty({item,iconColor,textColor,size,customContainerStyle={}}) {
     return (
         <>
                 <IconText 
@@ -52,16 +52,6 @@ function JobDetailsProperty({item,iconColor,textColor,size,customContainerStyle=
                 customContainerStyle={{width:'50%',...customContainerStyle}}
                 customTextStyle={{fontSize:size,color:textColor}}
                 />
-                {
-                    status && item.status && <IconText 
-                    icon={getIconBasedOnStatus(item.status)} 
-                    iconSize={size+5} 
-                    iconColor={getColorBasedOnStatus(item.status)}
-                    title={'status '+item.status}
-                    customContainerStyle={{width:'100%',marginTop:10,...customContainerStyle}}
-                    customTextStyle={{fontSize:size,color:getColorBasedOnStatus(item.status)}}
-                    />
-                }
         </>
     );
 }

@@ -1,12 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {Text,View,StyleSheet,TouchableWithoutFeedback} from 'react-native';
-import { DARK_GREY, LIGHT_GREY_COLOR } from '../../constant/Color';
-import CircularImage from './CicularImage';
-import IconText from './IconText';
+import { DARK_GREY } from '../../constant/Color';
 import JobDetailsProperty from './JobDetailsProperty';
 import UserCard from './UserCard';
-function JobCard({item,customContainerStyle,status=false}) {
+function JobCard({item,customContainerStyle}) {
     const navigation = useNavigation()
     return (
         <TouchableWithoutFeedback onPress={()=>navigation.navigate('JobDetail')}>
@@ -22,7 +20,7 @@ function JobCard({item,customContainerStyle,status=false}) {
                 iconColor={DARK_GREY} 
                 textColor={DARK_GREY}
                 size={14}
-                status={status}
+               
             />
                 </View>
             </View>

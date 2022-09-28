@@ -9,17 +9,21 @@ import SignUpMiddleware from "../middleware/SignUpMiddleware";
 import LogOutMiddleware from "../middleware/LogOutMiddleware";
 import SignInMiddleware from "../middleware/SignInMiddleware";
 import ProfileMiddleware from '../middleware/ProfileMiddleware';
+import notificationSlice from "./NotificationSlice";
+import NotificationMiddleware from "../middleware/NotificationMiddleware";
 const store = configureStore({
     reducer:{
         signup:SignUpSlice.reducer,
         logout:LogOutSlice.reducer,
         signin:SignInSlice.reducer,
-        profile:ProfileSlice.reducer
+        profile:ProfileSlice.reducer,
+        notification:notificationSlice.reducer
     },
     middleware:(getDefaultMiddleware) => getDefaultMiddleware()
                                         .concat(SignUpMiddleware)
                                         .concat(LogOutMiddleware)
                                         .concat(SignInMiddleware)
-                                        .concat(ProfileMiddleware),
+                                        .concat(ProfileMiddleware)
+                                        .concat(NotificationMiddleware),
 })
 export default store;

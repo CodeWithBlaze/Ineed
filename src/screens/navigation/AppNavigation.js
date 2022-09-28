@@ -1,11 +1,20 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Chat from '../BottomNavigationScreens/common/Chat';
 import BottomNavigation from './BottomNavigation';
 import MessageScreen from '../BottomNavigationScreens/common/MessageScreen';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { ProfileActions } from '../../backend/slices/ProfileSlice';
 function AppNavigation(props) {
     const Stack = createStackNavigator();
+    const dispatch = useDispatch();
+    const user = useSelector(state=>state.signup.user);
+    function fetchUserProileData(){
+        dispatch({type:ProfileActions.getProfileStarted.type,payload:{uid:user.uid}})
+    }
+    useEffect(()=>{
+        fetchUserProileData();
+    },[])
     return (
         <Stack.Navigator screenOptions={{
             headerShown:false

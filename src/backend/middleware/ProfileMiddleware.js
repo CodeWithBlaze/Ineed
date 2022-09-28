@@ -5,6 +5,7 @@ const collection_name = "Profile";
 
 const ProfileMiddleware = ({dispatch}) => next => async action =>{
     if(action.type === ProfileActions.setProfileStarted.type){
+        next(action);
         const {profileData,uid} = action.payload;
         addDocumentWithId(collection_name,uid,profileData)
         .then(() => {
@@ -15,7 +16,6 @@ const ProfileMiddleware = ({dispatch}) => next => async action =>{
             console.log(errorMessage)
             dispatch({type:ProfileActions.setProfileFail.type,payload:{error:errorMessage}})
         });
-       next(action);
     }
     else if(action.type === ProfileActions.getProfileStarted.type){
         const { uid } = action.payload;
