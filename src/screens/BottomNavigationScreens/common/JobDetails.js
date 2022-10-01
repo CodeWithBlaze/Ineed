@@ -35,8 +35,9 @@ const OptionsList = [
     },
 ]
 
-function JobDetails(props) {
+function JobDetails({route}) {
     const scrollRef = useRef();
+    const item = route.params.item;
     const [optionsList,setOptionsList] = useState(OptionsList);
     const [active,setActive] = useState(OptionsList[0]);
     
@@ -77,8 +78,8 @@ function JobDetails(props) {
             }}
             style={{margin:15}}
             >
-            <Text style={styles.heading}>Job Title</Text>
-            <Text style={styles.description}>The central place of “text” as a means of organising language in order to construct what people come to think of as “knowledge” is a phenomenon affecting all educators, students, and citizens of modern societies. This volume offers various voices and perspectives including those of Ron Carter and Michael Halliday on the role of text in education and society. </Text>
+            <Text style={styles.heading}>{item.title}</Text>
+            <Text style={styles.description}>{item.description}</Text>
             <Button 
             customButtonStyle={customStyle.actionBtn}
             title={'Book Now'}
@@ -93,34 +94,37 @@ function JobDetails(props) {
                 setOptionsList(newOptions);
             }}>
             <JobDetailsProperty 
-            item={cardData[0]} 
+            item={item} 
             iconColor={'white'} 
             textColor={'white'}
             customContainerStyle={{marginBottom:16}}
+            showEndingDate={true}
             />
             <IconText 
                 icon={'clock-o'} 
                 iconSize={size} 
                 iconColor={iconColor}
-                title={'12:45'}
+                title={item.time}
                 customContainerStyle={{width:'50%',marginBottom:15}}
-                customTextStyle={{fontSize:textSize,color:textColor,marginRight:15,marginLeft:10}}
+                customTextStyle={{fontSize:textSize,color:textColor,marginRight:15}}
             />
-            <IconText 
+            {
+                item.mode === 'physical' && <IconText 
                 icon={'road'} 
                 iconSize={size} 
                 iconColor={iconColor}
                 title={'2km'}
                 customContainerStyle={{width:'50%',marginBottom:25}}
-                customTextStyle={{fontSize:textSize,color:textColor,marginRight:15,marginLeft:10}}
+                customTextStyle={{fontSize:textSize,color:textColor,marginRight:15}}
             />
+            }
             <IconText 
                 icon={'users'} 
                 iconSize={size} 
                 iconColor={iconColor}
-                title={'Currently Enrolled Student 50'}
+                title={'Currently Enrolled Student '+item.currentlyEnrolledStudent}
                 customContainerStyle={{width:'100%'}}
-                customTextStyle={{fontSize:textSize,color:textColor,marginRight:15,marginLeft:10}}
+                customTextStyle={{fontSize:textSize,color:textColor,marginRight:15}}
             />
             <Button 
             customButtonStyle={customStyle.actionBtn}
@@ -136,15 +140,14 @@ function JobDetails(props) {
                 setOptionsList(newOptions);
             }}>
                 <View style={styles.user}>
-                    <UserCard rating={'4.3'} image={'https://cdn.pocket-lint.com/r/s/1200x630/assets/images/156367-tv-news-feature-every-marvel-movie-and-show-to-watch-before-black-widow-image10-9lcwr2ywcm.jpg'}/>
+                    <UserCard rating={'4.3'} image={item.image}/>
                     <View style={styles.userDetails}>
-                        <Text style={styles.JobPerson}>{'Mrs Kushina Uzumaki'}</Text>
-                        <Text style={styles.Job}>{'UI/UX Designer,MongoDB developer'}</Text>
+                        <Text style={styles.JobPerson}>{item.name}</Text>
+                        <Text style={styles.Job}>{item.profession}</Text>
                     </View>
                 </View>
                 <Text style={[[styles.Job,styles.instructorDescription]]}>
-                Kushina Uzumaki is the red-haired, willful mother of the titular protagonist Naruto Uzumaki. She was known for her fiery personality, her containment of the Nine-Tailed Beast Kurama, and her relationship with Naruto's father Minato Namikaze.
-                However, she wasn't eclipsed by her famous partner, the Fourth Hokage. Though fans didn't get to see much of Kushina throughout the series, since her appearances were limited to the occasional flashback, she quickly became a fan favorite. Her love for Naruto and her strength of character shine through in the anime, leaving fans in tears when she makes her on-screen appearances.
+                {item.userDescription}
                 </Text>
                 
                 <FlatList

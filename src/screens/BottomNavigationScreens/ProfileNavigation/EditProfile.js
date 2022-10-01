@@ -32,7 +32,7 @@ function EditProfile({route}) {
     const [profileImage,setProfileImage] = useState(profileData.image || initialProfileImage)
     const [name,setName] = useState(profileData.name || '');
     const [description,setDescription] = useState(profileData.description || '');
-    
+    const [profession,setProfession] = useState(profileData.profession || '');
     //--------------------Redux---------------------------------
     const user = useSelector(state=>state.signup.user);
     const isLoading = useSelector(state=>state.profile.isLoading);
@@ -43,16 +43,11 @@ function EditProfile({route}) {
         const profileData = {
             name,
             description,
+            profession,
             image:url,
             rating:0,
         }
         dispatch({type:ProfileActions.setProfileStarted.type,payload:{profileData:profileData,uid:user.uid}})
-    }
-    function onFinishImageUpdate(url){
-        updateDocumentWithId('Profile',user.uid,{image:url}).then(()=>{
-            dispatch({type:ProfileActions.getProfileStarted.type,payload:{uid:user.uid}})
-        })
-        .catch(err=>console.log(err))
     }
     async function uploadProfileData(onFinish){
         setImageUploadProgress(0);
@@ -101,6 +96,14 @@ function EditProfile({route}) {
                 type={'default'}
                 value={name}
                 setValue={setName}
+                />
+                <InfoHeadingText info={'Mention your skills in short or what you are by profession'}/>
+                <InputBox 
+                customStyle={customstyle.input} 
+                placeholder={'Your Skills or Profession'}
+                type={'default'}
+                value={profession}
+                setValue={setProfession}
                 />
                 <InfoHeadingText info={'This description will be shown in your profile and in your jobs'}/>
                 <InputBox 

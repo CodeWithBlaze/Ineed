@@ -74,6 +74,15 @@ function Profile(props) {
                     customTextStyle={{marginLeft:20}}
                     />
                     <IconText 
+                    icon={'th-large'} 
+                    title={'My Jobs'} 
+                    iconColor={PRIMARY_COLOR}
+                    iconSize={20}
+                    customContainerStyle={{marginBottom:20}}
+                    customTextStyle={{marginLeft:20}}
+                    onPress={()=>navigation.navigate('MyJobs')}
+                    />
+                    <IconText 
                     icon={'gift'} 
                     title={'Apply Coupon'} 
                     iconColor={PRIMARY_COLOR}

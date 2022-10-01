@@ -13,7 +13,7 @@ function UserCard({customContainerStyle,rating,image}) {
                 
                 />
                 <IconText 
-                title={rating} 
+                title={rating.toString()} 
                 icon={'star'} 
                 iconSize={20} 
                 iconColor='orange'

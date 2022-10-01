@@ -1,4 +1,4 @@
-import { addDocument, getDocumentsByQuery, getNotificationQuery } from "../functions/Database";
+import { addDocument, getQueryByUser, getDocumentsByQuery } from "../functions/Database";
 import { NotificationActions } from "../slices/NotificationSlice";
 
 
@@ -6,7 +6,7 @@ const NotificationMiddleware = ({dispatch}) => next => async action =>{
     if(action.type === NotificationActions.getNotificationStarted.type){
         next(action);
         const user = action.payload.user;
-        const query = getNotificationQuery(user);
+        const query = getQueryByUser(user,"Notifications");
         try{
             const notifications = await getDocumentsByQuery(query)
             const notificationsArray = [];

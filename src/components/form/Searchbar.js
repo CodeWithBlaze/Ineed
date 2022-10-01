@@ -3,13 +3,15 @@ import { View,StyleSheet,TextInput } from 'react-native';
 import { DARK_PRIMARY_COLOR } from '../../constant/Color';
 import Button from '../UI/Button';
 import InputBox from '../UI/InputBox';
-function Searchbar({onPress}) {
+function Searchbar({onPress,value,setValue}) {
     return (
         <View style={styles.container}>
             <View style={styles.searchContainer}>
             <InputBox 
             placeholder={'Search'}
-            customStyle={customStyle.searchBar} 
+            customStyle={customStyle.searchBar}
+            value={value}
+            setValue={setValue} 
             />
             <Button icon={'search'} customButtonStyle={customStyle.searchButton} iconSize={15}
             onPress={onPress}
