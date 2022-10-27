@@ -1,6 +1,6 @@
-export function extractFileNameFromUri(uri){
+export function extractFileNameFromUri(uid,uri){
     const index = uri.lastIndexOf('/');
-    return uri.substring(index+1);
+    return uid+'-'+uri.substring(index+1);
 }
 export function extractExtensionFromUri(uri){
     const index = uri.lastIndexOf('.');

@@ -14,7 +14,6 @@ import { useNavigation } from '@react-navigation/native';
 import { ProfileActions } from '../../../backend/slices/ProfileSlice';
 import ScreenLoading from '../../UI/ScreenLoading';
 
-
 function Profile(props) {
     const isLoading = useSelector(state=>state.logout.isLoading);
     const isProfileLoading = useSelector(state=>state.profile.isLoading);
@@ -47,9 +46,9 @@ function Profile(props) {
                 
             <ScrollView style={styles.container}>
                 <View style={styles.profileDetails}>
-                    <Text style={styles.profileName}>{profileData.name}</Text>
-                    <Text style={styles.location}>Los Angeles, New York</Text>
-                    <Text style={styles.description}>{profileData.description}</Text>
+                    <Text style={styles.profileName}>{profileData.name || 'complete your profile'}</Text>
+                    <Text style={styles.location}>{profileData.profession || 'complete your profile'}</Text>
+                    <Text style={styles.description}>{profileData.description || 'complete your profile'}</Text>
                 </View>
                 <View style={styles.profileDetailButtonContainer}>
                     <Button 

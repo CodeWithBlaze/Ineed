@@ -1,5 +1,8 @@
+import axios from "axios";
 import { doc, setDoc,updateDoc,getDoc,collection, addDoc,getDocs,query,where } from "firebase/firestore"; 
 import { firestore } from "../../config/Firebase";
+import { api } from "../../constant/Data";
+import {extractExtensionFromUri,extractFileNameFromUri} from '../../utils/common/extra';
 
 export async function addDocumentWithId(col,id,data){
     return await setDoc(doc(firestore, col, id), data);
@@ -56,4 +59,29 @@ export async function searchFromArrayInDatabase(col,arrayName,searchItem){
         }
     }
     return resultArray;
+}
+//my own backend
+export function createFormData(uid,uri){
+    const ext = extractExtensionFromUri(uri)
+    const type = ext === 'jpeg' || ext === 'jpg' ? 'image/jpeg':'image/png'
+    const formdata = new FormData()
+    formdata.append('image',{
+        type:type,
+        uri:uri,
+        name:extractFileNameFromUri(uid,uri)
+    })
+    return formdata
+}
+export async function uploadProfileData(data,uid){
+    return await axios.put(api+'/user/'+uid,{updateFields:data})
+}
+export async function uploadProfileImage(uid,uri){
+    const formdata = createFormData(uid,uri)
+    const url = `${api}/user/image/${uid}`;
+    return await axios.post(url,formdata,{
+        headers:{
+            'Content-Type':'multipart/form-data',
+            'Accept':'application/json'
+        }
+    })
 }

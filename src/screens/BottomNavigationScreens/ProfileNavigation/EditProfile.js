@@ -38,20 +38,14 @@ function EditProfile({route}) {
     const isLoading = useSelector(state=>state.profile.isLoading);
     const dispatch = useDispatch()
     //--------------------functions------------------------------
-
-    function onProfileDataUploadFinish(url){
+    async function uploadProfileData(){
+        
         const profileData = {
             name,
             description,
             profession,
-            image:url,
-            rating:0,
         }
-        dispatch({type:ProfileActions.setProfileStarted.type,payload:{profileData:profileData,uid:user.uid}})
-    }
-    async function uploadProfileData(onFinish){
-        setImageUploadProgress(0);
-        await uploadFile('Profile',user.uid,profileImage,setImageUploadProgress,onFinish);
+        dispatch({type:ProfileActions.setProfileStarted.type,payload:{profileData:profileData,uid:user.uid,image:{uri:profileImage}}}) 
     }
     
     //--------------------functions------------------------------
@@ -113,7 +107,7 @@ function EditProfile({route}) {
                 setValue={setDescription}
                 customStyle={{...customstyle.input,...customstyle.multilineBox,marginBottom:15}}
                 />
-                <Button onPress={()=>uploadProfileData(onProfileDataUploadFinish)} isLoading={isLoading} title={'Update Profile'} customButtonStyle={{borderRadius:5,marginBottom:80}}/>
+                <Button onPress={()=>uploadProfileData()} isLoading={isLoading} title={'Update Profile'} customButtonStyle={{borderRadius:5,marginBottom:80}}/>
                 <BottomSheetModal 
                 isVisible={isVisible} 
                 setVisible={setVisible}
