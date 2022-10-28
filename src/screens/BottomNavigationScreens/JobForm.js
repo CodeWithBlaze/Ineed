@@ -92,7 +92,19 @@ function JobForm(props) {
     //---------------------loaders-------------------------
     const [isLoading,setLoading] = useState(false);
     //---------------------loaders-------------------------
-    
+    //---------------------picker function------------------------------------
+    function onPickerChange(current_value){
+        if(current_value === 'one')
+            return;
+        else if(current_value === 'custom')
+            return;
+        else{
+            const calculatedDate = calculateDateDuration(current_value,date)
+            setEndDate(calculatedDate)
+        }
+    }
+    //---------------------picker function------------------------------------
+
     function SubmitForm(){
         setLoading(true);
         const formData = {
@@ -164,6 +176,7 @@ function JobForm(props) {
                     setOpen={setOpenDuration}
                     setValue={setValueDuration}
                     setItems={setItemsDuration}
+                    onChangeValue={onPickerChange}
                     style={{backgroundColor:'#EFEEFF',borderWidth:0,marginBottom:30}}
                     textStyle={{fontFamily:'Primary-Semibold',color:PRIMARY_COLOR}}
                     labelStyle={{color:PRIMARY_COLOR}}
@@ -188,13 +201,13 @@ function JobForm(props) {
                         <CustomDatePicker
                         show={showEndDate}
                         setShow={setShowEndDate}
-                        date={valueDuration === 'custom'?enddate:calculateDateDuration(valueDuration,date)}
+                        date={enddate}
                         onChange={onChangeEndDate}
                         message={valueDuration === 'custom'?'Select a date':'Ending date (auto generated)'}
                         />
                     </View>
                 }
-                <DaysSelector selectedDays={selectedDays} setSelectedDays={setSelectedDays}/>
+                {valueDuration !== 'one' && !showEndDate && !openDuration && <DaysSelector selectedDays={selectedDays} setSelectedDays={setSelectedDays} duration={{startingDate:date,endingDate:enddate}}/>}
                 {
                 showTime && 
                 <DateTimePicker

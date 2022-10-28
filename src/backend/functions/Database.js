@@ -1,7 +1,7 @@
 import axios from "axios";
 import { doc, setDoc,updateDoc,getDoc,collection, addDoc,getDocs,query,where } from "firebase/firestore"; 
 import { firestore } from "../../config/Firebase";
-import { api } from "../../constant/Data";
+import { profile_api } from "../../constant/Data";
 import {extractExtensionFromUri,extractFileNameFromUri} from '../../utils/common/extra';
 
 export async function addDocumentWithId(col,id,data){
@@ -73,11 +73,11 @@ export function createFormData(uid,uri){
     return formdata
 }
 export async function uploadProfileData(data,uid){
-    return await axios.put(api+'/user/'+uid,{updateFields:data})
+    return await axios.put(profile_api+'/'+uid,{updateFields:data})
 }
 export async function uploadProfileImage(uid,uri){
     const formdata = createFormData(uid,uri)
-    const url = `${api}/user/image/${uid}`;
+    const url = `${profile_api}/image/${uid}`;
     return await axios.post(url,formdata,{
         headers:{
             'Content-Type':'multipart/form-data',
