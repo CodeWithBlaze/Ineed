@@ -9,6 +9,8 @@ import UserCard from '../../../components/UI/UserCard';
 import { DARK_GREY, PRIMARY_COLOR } from '../../../constant/Color';
 import { cardData, reviews } from '../../../temp/Data';
 import Button from '../../../components/UI/Button';
+import useFetchJob from '../../../hooks/useFetchJob';
+import { extractTimeFromString } from '../../../utils/common/extra';
 
 
 const iconColor = 'white';
@@ -37,7 +39,8 @@ const OptionsList = [
 
 function JobDetails({route}) {
     const scrollRef = useRef();
-    const item = route.params.item;
+    const job_id = route.params.id;
+    const [jobDetails,setJobDetails] = useFetchJob(job_id)
     const [optionsList,setOptionsList] = useState(OptionsList);
     const [active,setActive] = useState(OptionsList[0]);
     
@@ -58,6 +61,7 @@ function JobDetails({route}) {
         else
             setActive(optionsList[2]);
     }
+    
     return (
         <SafeAreaView customStyle={{flex:1,padding:15,paddingTop:60}}>
             <SelectNavigator 
@@ -78,8 +82,8 @@ function JobDetails({route}) {
             }}
             style={{margin:15}}
             >
-            <Text style={styles.heading}>{item.title}</Text>
-            <Text style={styles.description}>{item.description}</Text>
+            <Text style={styles.heading}>{jobDetails.title}</Text>
+            <Text style={styles.description}>{jobDetails.description}</Text>
             <Button 
             customButtonStyle={customStyle.actionBtn}
             title={'Book Now'}
@@ -94,7 +98,7 @@ function JobDetails({route}) {
                 setOptionsList(newOptions);
             }}>
             <JobDetailsProperty 
-            item={item} 
+            item={jobDetails} 
             iconColor={'white'} 
             textColor={'white'}
             customContainerStyle={{marginBottom:16}}
@@ -104,12 +108,12 @@ function JobDetails({route}) {
                 icon={'clock-o'} 
                 iconSize={size} 
                 iconColor={iconColor}
-                title={item.time}
-                customContainerStyle={{width:'50%',marginBottom:15}}
+                title={extractTimeFromString(jobDetails.time)}
+                customContainerStyle={{width:'30%',marginBottom:15}}
                 customTextStyle={{fontSize:textSize,color:textColor,marginRight:15}}
             />
             {
-                item.mode === 'physical' && <IconText 
+                jobDetails.mode === 'physical' && <IconText 
                 icon={'road'} 
                 iconSize={size} 
                 iconColor={iconColor}
@@ -122,7 +126,7 @@ function JobDetails({route}) {
                 icon={'users'} 
                 iconSize={size} 
                 iconColor={iconColor}
-                title={'Currently Enrolled Student '+item.currentlyEnrolledStudent}
+                title={'Currently Enrolled Student '+jobDetails.currentlyEnrolledStudent}
                 customContainerStyle={{width:'100%'}}
                 customTextStyle={{fontSize:textSize,color:textColor,marginRight:15}}
             />
@@ -139,16 +143,18 @@ function JobDetails({route}) {
                 newOptions[2].scrollCoords = layout;
                 setOptionsList(newOptions);
             }}>
-                <View style={styles.user}>
-                    <UserCard rating={'4.3'} image={item.image}/>
+            {jobDetails && jobDetails.user_uid && 
+            <View style={styles.user}>
+                    <UserCard rating={jobDetails.user_uid.rating || 0} image={jobDetails.user_uid.image}/>
                     <View style={styles.userDetails}>
-                        <Text style={styles.JobPerson}>{item.name}</Text>
-                        <Text style={styles.Job}>{item.profession}</Text>
+                        <Text style={styles.JobPerson}>{jobDetails.user_uid.name}</Text>
+                        <Text style={styles.Job}>{jobDetails.user_uid.profession}</Text>
                     </View>
-                </View>
-                <Text style={[[styles.Job,styles.instructorDescription]]}>
-                {item.userDescription}
-                </Text>
+            </View>
+            }
+                {jobDetails && jobDetails.user_uid && <Text style={[[styles.Job,styles.instructorDescription]]}>
+                {jobDetails.user_uid.description}
+                </Text>}
                 
                 <FlatList
                 data={reviews}

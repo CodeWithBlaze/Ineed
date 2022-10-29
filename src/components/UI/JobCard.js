@@ -7,13 +7,13 @@ import UserCard from './UserCard';
 function JobCard({item,customContainerStyle}) {
     const navigation = useNavigation()
     return (
-        <TouchableWithoutFeedback onPress={()=>navigation.navigate('JobDetail',{item})}>
+        <TouchableWithoutFeedback onPress={()=>navigation.navigate('JobDetail',{id:item._id})}>
 
         <View style={[styles.container,customContainerStyle]}>
-            <UserCard rating={item.rating} image={item.image}/>
+            <UserCard rating={item.user_uid.rating} image={item.user_uid.image}/>
             <View style={styles.userDetails}>
-                <Text style={styles.JobPerson}>{item.name}</Text>
-                <Text style={styles.Job}>{item.title}</Text>
+                <Text style={styles.JobPerson}>{item.title}</Text>
+                <Text style={styles.Job}>{item.user_uid.name}</Text>
                 <View style={styles.JobDetails}>
                 <JobDetailsProperty 
                 item={item} 
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
     JobPerson:{
         fontFamily:'Primary-Bold',
-        fontSize:18,
+        fontSize:16,
         marginBottom:5
     },
     Job:{

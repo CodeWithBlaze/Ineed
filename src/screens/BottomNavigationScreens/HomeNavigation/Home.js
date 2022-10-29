@@ -65,10 +65,10 @@ function Home(props) {
                     />
                 </View>
             </View>
-            <CategortList data={cardData} category={'Explore'}/>
-            <CategortList data={cardData} category={'Oneday Boost'}/>
-            <CategortList data={cardData} category={'Weekly Dose'}/>
-            <CategortList data={cardData} category={'Join Batch'} customContainerStyle={{marginBottom:60}}/>
+            <CategortList type={'duration/one'} category={'Explore'}/>
+            <CategortList type={'duration/one'} category={'Oneday Boost'}/>
+            <CategortList type={'duration/week'} category={'Weekly Dose'}/>
+            <CategortList type={'duration/month'} category={'Join Batch'} customContainerStyle={{marginBottom:60}}/>
             
             </ScrollView>
            

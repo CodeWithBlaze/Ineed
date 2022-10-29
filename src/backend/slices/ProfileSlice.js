@@ -1,3 +1,5 @@
+import { showErrorToast, showSuccessToast } from "../../utils/toast/Toast";
+
 const { createSlice } = require("@reduxjs/toolkit");
 
 const ProfileSlice = createSlice({
@@ -11,14 +13,15 @@ const ProfileSlice = createSlice({
         setProfileSuccess:function(state,action){
             state.isLoading = false;
             state.profile = action.payload.profile
+            showSuccessToast('Profile Updated Successfully')
         },
         setProfileFail:function(state,action){
             state.isLoading = false;
             state.error = action.payload.error
+            showErrorToast('Profile Update Failed')
         },
         getProfileStarted:function(state,action){
             state.isLoading = true;
-            console.log(state.isLoading);
             state.error = '';
         },
         getProfileSuccess:function(state,action){
@@ -28,6 +31,7 @@ const ProfileSlice = createSlice({
         getProfileFail:function(state,action){
             state.isLoading = false;
             state.error = action.payload.error;
+            showErrorToast('Unable to fetch your profile')
         }
     }
 })

@@ -18,11 +18,7 @@ const notificationSlice = createSlice({
         },
         setLocalNotification:function(state,action){
             state.notifications.push({...action.payload.notification,id:state.notifications.length + 1});
-        },
-        addNotificationDatabaseStarted:function(state,action){
-            state.isLoading = true;
-            state.error = '';
-        },
+        }
         
     }
 })

@@ -13,6 +13,8 @@ const ProfileMiddleware = ({dispatch}) => next => async action =>{
         .then((res) => {
             if(image.uri.startsWith('file://'))
                 return uploadProfileImage(uid,image.uri)
+            else
+                return res
         })
         .then((res)=>dispatch({type:ProfileActions.setProfileSuccess.type,payload:{profile:{...res.data,image:createImageUrl(res.data.image)}}}))
         .catch((error) => {

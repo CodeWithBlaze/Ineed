@@ -1,6 +1,7 @@
 import React from 'react';
 import { View,StyleSheet } from 'react-native';
 import { LIGHT_GREY_COLOR } from '../../constant/Color';
+import { createImageUrl } from '../../utils/common/extra';
 import CircularImage from './CicularImage';
 import IconText from './IconText';
 
@@ -8,7 +9,7 @@ function UserCard({customContainerStyle,rating,image}) {
     return (
         <View style={[styles.userinfo,customContainerStyle]}>
                 <CircularImage 
-                url={image}
+                url={createImageUrl(image)}
                 size={80}
                 
                 />

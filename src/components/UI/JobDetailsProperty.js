@@ -1,30 +1,24 @@
 import React from 'react';
+import { extractDateFromString } from '../../utils/common/extra';
 import IconText from './IconText';
-
-function getIconBasedOnStatus(status){
-    if(status === 'accepted')
-        return 'check-circle';
-    else if(status === 'cancelled')
-        return 'times-circle';
+function getProperDuration(duration){
+    if(duration == 'one')
+        return '1 Day'
+    else if(duration == 'week')
+        return '1 Week'
+    else if(duration == 'month')
+        return '1 Month'
     else
-        return 'adjust'
+        return 'custom'
 }
-function getColorBasedOnStatus(status){
-    if(status === 'accepted')
-        return 'green';
-    else if(status === 'cancelled')
-        return 'red';
-    else
-        return 'orange'
-}
-function JobDetailsProperty({item,iconColor,textColor,size,showEndingDate=false,customContainerStyle={}}) {
+function JobDetailsProperty({item,iconColor,textColor,size,customContainerStyle={}}) {
     return (
         <>
                 <IconText 
                 icon={'money'} 
                 iconSize={size} 
                 iconColor={iconColor}
-                title={'Rs '+item.fees + "/hr"}
+                title={'Rs '+ item.fees + "/hr"}
                 customContainerStyle={{width:'50%',...customContainerStyle}}
                 customTextStyle={{fontSize:size,color:textColor,marginRight:15}}
                 />
@@ -41,15 +35,23 @@ function JobDetailsProperty({item,iconColor,textColor,size,showEndingDate=false,
                 iconSize={size} 
                 iconColor={iconColor}
                 title={item.language || 'English'}
-                customContainerStyle={{width:'100%',...customContainerStyle}}
+                customContainerStyle={{width:'50%',...customContainerStyle}}
+                customTextStyle={{fontSize:size,color:textColor,marginRight:15}}
+                />
+                <IconText 
+                icon={'refresh'} 
+                iconSize={size} 
+                iconColor={iconColor}
+                title={getProperDuration(item.duration)}
+                customContainerStyle={{width:'50%',...customContainerStyle}}
                 customTextStyle={{fontSize:size,color:textColor,marginRight:15}}
                 />
                 <IconText 
                 icon={'calendar'} 
                 iconSize={size} 
                 iconColor={iconColor}
-                title={showEndingDate?item.startingDate + " - "+ item.endingDate:item.startingDate}
-                customContainerStyle={{width:'100%',...customContainerStyle}}
+                title={extractDateFromString(item.startingDate)}
+                customContainerStyle={{width:'50%',...customContainerStyle}}
                 customTextStyle={{fontSize:size,color:textColor}}
                 />
                 

@@ -14,13 +14,16 @@ import CustomDatePicker from '../../utils/CustomDatePicker';
 import DaysSelector from '../../components/UI/DaysSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import  DateTimePicker  from '@react-native-community/datetimepicker';
-import { addDocument } from '../../backend/functions/Database';
 import { showErrorToast, showSuccessToast } from '../../utils/toast/Toast';
+import axios from 'axios';
+import { job_api } from '../../constant/Data';
 import { NotificationActions } from '../../backend/slices/NotificationSlice';
+import ScreenLoading from '../UI/ScreenLoading';
 
 function JobForm(props) {
     //--------------redux------------------------------
     const user = useSelector(state=>state.signup.user);
+    const profile = useSelector(state=>state.profile.profile)
     const dispatch = useDispatch();
     //---------------Mode Picker------------------------
     const [open, setOpen] = useState(false);
@@ -106,6 +109,10 @@ function JobForm(props) {
     //---------------------picker function------------------------------------
 
     function SubmitForm(){
+        if(!profile){
+            showErrorToast('Please complete your profile')
+            return;
+        }
         setLoading(true);
         const formData = {
             title:jobTitle,
@@ -122,31 +129,25 @@ function JobForm(props) {
             tags:tags,
             cancellationChance:Cancellation,
             currentlyEnrolledStudent:0,
-            status:'active', //status can be active,inactive,expired
-            uid:user.uid
+            status:true,
+            uid:user.uid,
+            user_uid:profile._id
         }
-        addDocument('Jobs',formData).then(()=>{
+        axios.post(job_api,formData)
+        .then((res)=>{
+            setLoading(false)
+            showSuccessToast('Job created Successfully')
+        })
+        .catch(err=>{
+            console.log(err)
             setLoading(false);
-            showSuccessToast('Job Created Successfully')
-            const notification = {
-                type:'success',
-                title:'You created a new job',
-                subtitle:`Job named ${jobTitle} was created Successfully`,
-                uid:user.uid
-            }
-            dispatch({type:NotificationActions.addNotificationDatabaseStarted.type,payload:{notification}})
-        }).catch(err=>{
-            setLoading(false);
-            showErrorToast(err.message)
-            const notification = {
-                type:'fail',
-                title:'Job Creation Failed',
-                subtitle:`Job named ${jobTitle} was not created`,
-                uid:user.uid
-            }
-            dispatch({type:NotificationActions.addNotificationDatabaseStarted.type,payload:{notification}})
+            showErrorToast('Job creation failed')
+        })
+        .finally(()=>{
+            dispatch({action:NotificationActions.getNotificationStarted.type,payload:{user:user.uid}})
         })
     }
+    
     return (
         <SafeAreaView customStyle={{flex:1}}> 
             

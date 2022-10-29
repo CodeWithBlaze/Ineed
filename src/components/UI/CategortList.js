@@ -1,5 +1,6 @@
 import React from 'react';
 import { View,Text,FlatList,StyleSheet } from 'react-native';
+import useFetchJob from '../../hooks/useFetchJob';
 import JobCard from './JobCard';
 
 function Spacers({space}){
@@ -10,7 +11,10 @@ function CardItemList({item}){
         return <Spacers space={30}/>
     return  <JobCard item={item} customContainerStyle={{marginRight:30}}/>
 }
-function CategortList({category,data,customContainerStyle}) {
+function CategortList({category,type,customContainerStyle}) {
+    const [data,setData] = useFetchJob(type)
+    if(data.length === 0)
+    return null;
     return (
         <View style={[styles.CategoryJobContainer,customContainerStyle]}>
                 <Text style={styles.categoryText}>{category}</Text>
@@ -20,9 +24,9 @@ function CategortList({category,data,customContainerStyle}) {
                 showsHorizontalScrollIndicator={false}
                 decelerationRate={0}
                 horizontal={true}
-                data={[...data,{id:data.length+1,type:'spacers'}]}
+                data={[...data,{_id:1,type:'spacers'}]}
                 renderItem={CardItemList}
-                keyExtractor={item=>item.id}
+                keyExtractor={item=>item._id}
                 />
         </View>
     );

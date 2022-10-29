@@ -28,7 +28,7 @@ function Notification(props) {
     return (
         <SafeAreaView customStyle={customStyle.container}>
            {
-            notifications.map(notification=>getNotificationByType(notification.type,notification.title,notification.subtitle,notification.id))
+            notifications.map(notification=>getNotificationByType(notification.nt_type,notification.title,notification.subtitle,notification._id))
            }
         </SafeAreaView>
     );

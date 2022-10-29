@@ -12,3 +12,11 @@ export function extractExtensionFromUri(uri){
 export function createImageUrl(image){
     return `${api}/${image}`
 }
+export function extractDateFromString(dt){
+    const date = new Date(dt)
+    return date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
+}
+export function extractTimeFromString(dt){
+    const date = new Date(dt);
+    return date.getHours()+":"+date.getMinutes();
+}

@@ -10,6 +10,9 @@ import Seperator from '../../../components/UI/Seperator';
 import { useNavigation } from '@react-navigation/native';
 import { searchFromArrayInDatabase } from '../../../backend/functions/Database';
 import ScreenLoading from '../../UI/ScreenLoading';
+import { job_api } from '../../../constant/Data';
+import axios from 'axios';
+import { showErrorToast } from '../../../utils/toast/Toast';
 
 function JobResult({item}){
     return <View>
@@ -24,11 +27,16 @@ function Search(props) {
     const [loading,setLoading] = useState(false);
     
     function onSearch(){
-        setLoading(true)
-        searchFromArrayInDatabase('Jobs','tags',searchInput).then(docs=>{
+        // setLoading(true)
+        axios.get(job_api+'/search/'+searchInput)
+        .then(res=>{
+            setLoading(false)
+            setSearchResult(res.data)
+        })
+        .catch(err=>{
             setLoading(false);
-            setSearchResult(docs);
-        }).catch(err=>console.log(err.message))
+            showErrorToast('Something went wrong while searching')
+        })
     }
     return (
         <SafeAreaView customStyle={{flex:1,backgroundColor:PRIMARY_COLOR}}>
@@ -48,7 +56,7 @@ function Search(props) {
                     data={searchResult}
                     renderItem={JobResult}
                     showsVerticalScrollIndicator={false}
-                    keyExtractor={item=>item.id}
+                    keyExtractor={item=>item._id}
                     />
                     }
                     
