@@ -11,7 +11,11 @@ import { cardData, reviews } from '../../../temp/Data';
 import Button from '../../../components/UI/Button';
 import useFetchJob from '../../../hooks/useFetchJob';
 import { extractTimeFromString } from '../../../utils/common/extra';
-
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { booking_api } from '../../../constant/Data';
+import { showErrorToast, showSuccessToast } from '../../../utils/toast/Toast';
+import {NotificationActions} from '../../../backend/slices/NotificationSlice'
 
 const iconColor = 'white';
 const textColor = "white";
@@ -43,7 +47,9 @@ function JobDetails({route}) {
     const [jobDetails,setJobDetails] = useFetchJob(job_id)
     const [optionsList,setOptionsList] = useState(OptionsList);
     const [active,setActive] = useState(OptionsList[0]);
-    
+    const user = useSelector(state=>state.signup.user);
+    const [loading,setLoading] = useState(false);
+    const dispatch = useDispatch()
     function scrollClickHandler(id){
         if(optionsList[id] && optionsList[id].scrollCoords && optionsList[id].scrollCoords.y)
             scrollRef.current.scrollTo({y:optionsList[id].scrollCoords.y})
@@ -61,7 +67,21 @@ function JobDetails({route}) {
         else
             setActive(optionsList[2]);
     }
-    
+    function onBook(){
+        setLoading(true);
+        axios.post(booking_api,{
+            student_id:user.uid,
+            job_id:job_id,
+            valid_up_to:jobDetails.endingDate,
+            
+        })
+        .then(res=>showSuccessToast('Booking confirmed'))
+        .catch(err=>showErrorToast('Booking Failed'))
+        .finally(()=>{
+            setLoading(false);
+            dispatch({type:NotificationActions.getNotificationStarted.type,payload:{user:user.uid}})
+        })
+    }
     return (
         <SafeAreaView customStyle={{flex:1,padding:15,paddingTop:60}}>
             <SelectNavigator 
@@ -87,6 +107,8 @@ function JobDetails({route}) {
             <Button 
             customButtonStyle={customStyle.actionBtn}
             title={'Book Now'}
+            isLoading={loading}
+            onPress={()=>onBook()}
             customTextStyle={customStyle.actionText}
             />
             </View>
@@ -133,6 +155,8 @@ function JobDetails({route}) {
             <Button 
             customButtonStyle={customStyle.actionBtn}
             title={'Book Now'}
+            isLoading={loading}
+            onPress={()=>onBook()}
             customTextStyle={customStyle.actionText}
             />
             </View>
@@ -167,6 +191,8 @@ function JobDetails({route}) {
             <Button 
             customButtonStyle={customStyle.actionBtn}
             title={'Book Now'}
+            isLoading={loading}
+            onPress={()=>onBook()}
             customTextStyle={customStyle.actionText}
             />
         </ScrollView>

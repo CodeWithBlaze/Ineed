@@ -18,7 +18,6 @@ import { showErrorToast, showSuccessToast } from '../../utils/toast/Toast';
 import axios from 'axios';
 import { job_api } from '../../constant/Data';
 import { NotificationActions } from '../../backend/slices/NotificationSlice';
-import ScreenLoading from '../UI/ScreenLoading';
 
 function JobForm(props) {
     //--------------redux------------------------------
@@ -144,7 +143,7 @@ function JobForm(props) {
             showErrorToast('Job creation failed')
         })
         .finally(()=>{
-            dispatch({action:NotificationActions.getNotificationStarted.type,payload:{user:user.uid}})
+            dispatch({type:NotificationActions.getNotificationStarted.type,payload:{user:user.uid}})
         })
     }
     

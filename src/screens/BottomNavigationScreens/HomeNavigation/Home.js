@@ -8,6 +8,7 @@ import { cardData, SponseredTeachers } from '../../../temp/Data';
 import CategortList from '../../../components/UI/CategortList';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 function ListImageContainer({item}){
     if(item.type === 'spacers')
@@ -27,6 +28,7 @@ function Spacers({space}){
 }
 function Home(props) {
     const navigation = useNavigation();
+    const user = useSelector(state=>state.signup.user);
     return (
         
         <SafeAreaView customStyle={{flex:1}}>
@@ -65,10 +67,10 @@ function Home(props) {
                     />
                 </View>
             </View>
-            <CategortList type={'duration/one'} category={'Explore'}/>
-            <CategortList type={'duration/one'} category={'Oneday Boost'}/>
-            <CategortList type={'duration/week'} category={'Weekly Dose'}/>
-            <CategortList type={'duration/month'} category={'Join Batch'} customContainerStyle={{marginBottom:60}}/>
+            <CategortList type={'duration/one?id='+user.uid} category={'Explore'}/>
+            <CategortList type={'duration/one?id='+user.uid} category={'Oneday Boost'}/>
+            <CategortList type={'duration/week?id='+user.uid} category={'Weekly Dose'}/>
+            <CategortList type={'duration/month?id='+user.uid} category={'Join Batch'} customContainerStyle={{marginBottom:60}}/>
             
             </ScrollView>
            
