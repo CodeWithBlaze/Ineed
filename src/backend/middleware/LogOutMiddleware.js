@@ -4,7 +4,6 @@ import { LogOutActions } from "../slices/LogOutSlice";
 
 const LogOutMiddleware = ({dispatch}) => next => async action =>{
     if(action.type === LogOutActions.LogOutStarted.type){
-        console.log(action);
         LogOut()
         .then(() => {
             dispatch({type:LogOutActions.LogOutSuccess.type})

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Text,StyleSheet,View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateDocumentWithId } from '../../../backend/functions/Database';
-import { uploadFile } from '../../../backend/functions/Storage';
 import { ProfileActions } from '../../../backend/slices/ProfileSlice';
 import BottomSheetModal from '../../../components/container/BottomSheet';
 import SafeAreaView from '../../../components/container/SafeAreaView';

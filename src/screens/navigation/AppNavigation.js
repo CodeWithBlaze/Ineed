@@ -5,6 +5,7 @@ import BottomNavigation from './BottomNavigation';
 import MessageScreen from '../BottomNavigationScreens/common/MessageScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProfileActions } from '../../backend/slices/ProfileSlice';
+import { BookingSliceAction } from '../../backend/slices/BookingSlice';
 function AppNavigation(props) {
     const Stack = createStackNavigator();
     const dispatch = useDispatch();
@@ -12,8 +13,12 @@ function AppNavigation(props) {
     function fetchUserProileData(){
         dispatch({type:ProfileActions.getProfileStarted.type,payload:{uid:user.uid}})
     }
+    function fetchUserBookings(){
+        dispatch({type:BookingSliceAction.getBookingsStarted.type,payload:{uid:user.uid}})
+    }
     useEffect(()=>{
         fetchUserProileData();
+        fetchUserBookings();
     },[])
     return (
         <Stack.Navigator screenOptions={{

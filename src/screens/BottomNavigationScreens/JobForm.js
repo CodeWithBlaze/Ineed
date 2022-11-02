@@ -127,7 +127,6 @@ function JobForm(props) {
             experience:experience,
             tags:tags,
             cancellationChance:Cancellation,
-            currentlyEnrolledStudent:0,
             status:true,
             uid:user.uid,
             user_uid:profile._id

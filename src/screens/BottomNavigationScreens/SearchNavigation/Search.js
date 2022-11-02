@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import {StyleSheet,ScrollView,View,Modal,Text, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import {StyleSheet,View,Modal,Text, FlatList } from 'react-native';
 import SafeAreaView from '../../../components/container/SafeAreaView';
 import { DARK_GREY, PRIMARY_COLOR } from '../../../constant/Color';
 import IconText from '../../../components/UI/IconText';
 import Searchbar from '../../../components/form/Searchbar';
-import { cardData} from '../../../temp/Data';
 import JobCard from '../../../components/UI/JobCard';
 import Seperator from '../../../components/UI/Seperator';
-import { useNavigation } from '@react-navigation/native';
-import { searchFromArrayInDatabase } from '../../../backend/functions/Database';
 import ScreenLoading from '../../UI/ScreenLoading';
 import { job_api } from '../../../constant/Data';
 import axios from 'axios';
