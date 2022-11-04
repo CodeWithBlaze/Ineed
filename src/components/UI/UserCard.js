@@ -9,7 +9,7 @@ function UserCard({customContainerStyle,rating,image}) {
     return (
         <View style={[styles.userinfo,customContainerStyle]}>
                 <CircularImage 
-                url={createImageUrl(image)}
+                url={(image.startsWith('http') || image.startsWith('https'))?image:createImageUrl(image)}
                 size={80}
                 
                 />

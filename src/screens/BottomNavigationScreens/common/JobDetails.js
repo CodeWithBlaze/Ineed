@@ -17,6 +17,7 @@ import { booking_api } from '../../../constant/Data';
 import { showErrorToast, showSuccessToast } from '../../../utils/toast/Toast';
 import {NotificationActions} from '../../../backend/slices/NotificationSlice'
 import useCountStudentEnrolled from '../../../hooks/useCountStudentEnrolled';
+import ScreenLoading from '../../UI/ScreenLoading';
 
 const iconColor = 'white';
 const textColor = "white";
@@ -45,7 +46,7 @@ const OptionsList = [
 function JobDetails({route}) {
     const scrollRef = useRef();
     const job_id = route.params.id;
-    const [jobDetails,setJobDetails] = useFetchJob(job_id)
+    const [jobDetails,setJobDetails,detailsLoading] = useFetchJob(job_id)
     const enrollCount = useCountStudentEnrolled(job_id)
     const [optionsList,setOptionsList] = useState(OptionsList);
     const [active,setActive] = useState(OptionsList[0]);
@@ -87,9 +88,55 @@ function JobDetails({route}) {
             dispatch({type:NotificationActions.getNotificationStarted.type,payload:{user:user.uid}})
         })
     }
+    function buttonBasedOnUser(){
+        if(jobDetails && jobDetails.user_uid && jobDetails.user_uid.uid && user.uid === jobDetails.user_uid.uid){
+            return <View>
+                <Button 
+                customButtonStyle={{...customStyle.actionBtn,marginBottom:0}}
+                title={'Edit Job'}
+                isLoading={loading}
+                onPress={()=>onEdit()}
+                customTextStyle={customStyle.actionText}
+                />
+                <Button 
+                customButtonStyle={{...customStyle.actionBtn,backgroundColor:'#FF7F7F',borderWidth:1,borderColor:'red'}}
+                title={'Delete Job'}
+                isLoading={loading}
+                onPress={()=>onDelete()}
+                customTextStyle={{...customStyle.actionText,color:'red'}}
+                />
+            </View>
+        }
+        else if(!isJobPresentInBooking()){
+            return <Button 
+                customButtonStyle={customStyle.actionBtn}
+                title={'Book Now'}
+                isLoading={loading}
+                onPress={()=>onBook()}
+                customTextStyle={customStyle.actionText}
+            />
+        }
+        else{
+            return <Button 
+            customButtonStyle={customStyle.actionBtn}
+            title={'Cancel Booking'}
+            isLoading={loading}
+            onPress={()=>onCancel()}
+            customTextStyle={customStyle.actionText}
+            />
+        }
+    }
     function onCancel(){
 
     }
+    function onEdit(){
+
+    }
+    function onDelete(){
+
+    }
+    if(detailsLoading)
+        return <ScreenLoading/>
     return (
         <SafeAreaView customStyle={{flex:1,padding:15,paddingTop:60}}>
             <SelectNavigator 
@@ -113,22 +160,7 @@ function JobDetails({route}) {
             <Text style={styles.heading}>{jobDetails.title}</Text>
             <Text style={styles.description}>{jobDetails.description}</Text>
             {
-                !isJobPresentInBooking()?
-                <Button 
-                customButtonStyle={customStyle.actionBtn}
-                title={'Book Now'}
-                isLoading={loading}
-                onPress={()=>onBook()}
-                customTextStyle={customStyle.actionText}
-                />
-                :
-                <Button 
-                customButtonStyle={customStyle.actionBtn}
-                title={'Cancel Booking'}
-                isLoading={loading}
-                onPress={()=>onCancel()}
-                customTextStyle={customStyle.actionText}
-                />
+                (jobDetails && jobDetails.user_uid &&  jobDetails.user_uid.uid && (user.uid !== jobDetails.user_uid.uid)) ?buttonBasedOnUser():null
             }
             </View>
             <View style={styles.propertyContainer} onLayout={(event)=>{
@@ -172,22 +204,7 @@ function JobDetails({route}) {
                 customTextStyle={{fontSize:textSize,color:textColor,marginRight:15}}
             />
             {
-                !isJobPresentInBooking()?
-                <Button 
-                customButtonStyle={customStyle.actionBtn}
-                title={'Book Now'}
-                isLoading={loading}
-                onPress={()=>onBook()}
-                customTextStyle={customStyle.actionText}
-                />
-                :
-                <Button 
-                customButtonStyle={customStyle.actionBtn}
-                title={'Cancel Booking'}
-                isLoading={loading}
-                onPress={()=>onCancel()}
-                customTextStyle={customStyle.actionText}
-                />
+                (jobDetails && jobDetails.user_uid &&  jobDetails.user_uid.uid && (user.uid !== jobDetails.user_uid.uid)) ?buttonBasedOnUser():null
             }
             </View>
             <View style={styles.instructor} onLayout={(event)=>{
@@ -219,22 +236,7 @@ function JobDetails({route}) {
                 />
             </View>
             {
-                !isJobPresentInBooking()?
-                <Button 
-                customButtonStyle={customStyle.actionBtn}
-                title={'Book Now'}
-                isLoading={loading}
-                onPress={()=>onBook()}
-                customTextStyle={customStyle.actionText}
-                />
-                :
-                <Button 
-                customButtonStyle={customStyle.actionBtn}
-                title={'Cancel Booking'}
-                isLoading={loading}
-                onPress={()=>onCancel()}
-                customTextStyle={customStyle.actionText}
-                />
+                buttonBasedOnUser()
             }
         </ScrollView>
             </SelectNavigator>

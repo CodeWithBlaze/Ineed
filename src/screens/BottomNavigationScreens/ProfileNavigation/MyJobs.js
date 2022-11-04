@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
+import JobContainer from '../../../components/container/JobContainer';
 import SafeAreaView from '../../../components/container/SafeAreaView';
-import JobCard from '../../../components/UI/JobCard';
-import useFetchBookings from '../../../hooks/useFetchBookings';
+import useFetchJob from '../../../hooks/useFetchJob';
 
 function MyJobs(props) {
     const user = useSelector(state=>state.signup.user)
-    const [bookings,setBookings] = useFetchBookings('user/'+user.uid)
+    const [jobs,setJobs,loading] = useFetchJob('user/'+user.uid)
+    const profile = useSelector(state=>state.profile.profile)
+    if(jobs)
+        for(let i in jobs)
+            jobs[i].user_uid = {_id:jobs[i].user_uid,...profile}
     return (
-        <SafeAreaView customStyle={{flex:1,marginTop:15}}>
-            <ScrollView style={{flex:1}} contentContainerStyle={{alignItems:'center'}}>
-                {
-                    bookings.map(booking=><JobCard item={booking.job_id} key={booking._id} customContainerStyle={{width:'95%',marginBottom:15,elevation:15}}/>)
-                }
-            </ScrollView>
-        </SafeAreaView>
+        <JobContainer data={jobs} isLoading={loading}/>
     );
 }
 
